@@ -3,5 +3,4 @@ from django.shortcuts import render
 
 # Create your views here.
 def index(request):
-    return HttpResponse('This is the API root path')
-
+    return HttpResponse('This is the Home page')

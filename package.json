@@ -1,0 +1,17 @@
+{
+  "name": "social_hub",
+  "version": "1.0.0",
+  "description": "`python3 manage.py runserver`",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "python manage.py runserver",
+    "dev:client": "cd client && npm run dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bruno de Rezende",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  }
+}
