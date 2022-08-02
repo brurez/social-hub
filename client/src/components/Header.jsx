@@ -6,13 +6,14 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import {Link as RouterLink} from 'react-router-dom';
 
 function Header(props) {
-  const { sections, title } = props;
+  const {sections, title} = props;
 
   return (
     <React.Fragment>
-      <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Toolbar sx={{borderBottom: 1, borderColor: 'divider'}}>
         <Button size="small">Subscribe</Button>
         <Typography
           component="h2"
@@ -20,21 +21,21 @@ function Header(props) {
           color="inherit"
           align="center"
           noWrap
-          sx={{ flex: 1 }}
+          sx={{flex: 1}}
         >
-          {title}
+          <a href="/">{title}</a>
         </Typography>
         <IconButton>
-          <SearchIcon />
+          <SearchIcon/>
         </IconButton>
-        <Button variant="outlined" size="small">
+        <Button variant="outlined" size="small" component={"a"} href={"/signup"}>
           Sign up
         </Button>
       </Toolbar>
       <Toolbar
         component="nav"
         variant="dense"
-        sx={{ justifyContent: 'space-between', overflowX: 'auto' }}
+        sx={{justifyContent: 'space-between', overflowX: 'auto'}}
       >
         {sections.map((section) => (
           <Link
@@ -43,7 +44,7 @@ function Header(props) {
             key={section.title}
             variant="body2"
             href={section.url}
-            sx={{ p: 1, flexShrink: 0 }}
+            sx={{p: 1, flexShrink: 0}}
           >
             {section.title}
           </Link>

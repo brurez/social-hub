@@ -1,39 +1,26 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
+import Grid from "@mui/material/Grid";
+import Posts from "./Posts.jsx";
+import Sidebar from "./Sidebar.jsx";
+import * as React from "react";
 
-function Main(props) {
-  const { posts, title } = props;
-
+export default function Main({ sidebar, posts, title }) {
   return (
-    <Grid
-      item
-      xs={12}
-      md={8}
-      sx={{
-        '& .markdown': {
-          py: 3,
-        },
-      }}
-    >
-      <Typography variant="h6" gutterBottom>
-        {title}
-      </Typography>
-      <Divider />
-      {posts.map((post) => (
-        <Box>
-          {post}
-        </Box>
-      ))}
-    </Grid>
-  );
+    <main>
+          {/*<MainFeaturedPost post={mainFeaturedPost} />
+          <Grid container spacing={4}>
+            {featuredPosts.map((post) => (
+              <FeaturedPost key={post.title} post={post} />
+            ))}
+          </Grid>*/}
+          <Grid container spacing={5} sx={{ mt: 3 }}>
+            <Posts title="From the firehose" posts={posts} />
+            <Sidebar
+              title={sidebar.title}
+              description={sidebar.description}
+              archives={sidebar.archives}
+              social={sidebar.social}
+            />
+          </Grid>
+        </main>
+  )
 }
-
-Main.propTypes = {
-  posts: PropTypes.arrayOf(PropTypes.string).isRequired,
-  title: PropTypes.string.isRequired,
-};
-
-export default Main;
