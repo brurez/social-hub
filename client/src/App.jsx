@@ -80,14 +80,18 @@ const sidebar = {
   ],
 };
 
-const theme = createTheme();
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+  }
+});
 
-export default function Blog() {
+export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="lg">
-        <Header title="Blog" sections={sections} />
+      <Container maxWidth="lg" sx={{ margin: "auto"}}>
+        <Header title="Social Hub" sections={sections} />
         <main>
           {/*<MainFeaturedPost post={mainFeaturedPost} />
           <Grid container spacing={4}>
