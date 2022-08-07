@@ -1,4 +1,4 @@
-from api.models import User
+from django.contrib.auth.models import User, auth
 
 
 class AuthService:
@@ -13,3 +13,17 @@ class AuthService:
                 user.save()
         else:
             raise Exception('Passwords do not match')
+
+    @staticmethod
+    def sign_in(request, email, password):
+        user = auth.authenticate(username=email, password=password)
+        if user is not None:
+            auth.login(request, user)
+            return True
+
+        raise Exception('Invalid credentials')
+
+    @staticmethod
+    def logout(request):
+        auth.logout(request)
+        return True

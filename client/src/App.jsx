@@ -24,6 +24,11 @@ import {
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import {StoreProvider} from "./store/StoreProvider";
 import Message from "./components/Message.jsx";
+import SignIn from "./components/SignIn.jsx";
+import {useEffect} from "react";
+import {useCurrentUser} from "./hooks/useCurrentUser.js";
+import Models from "./lib/Models.js";
+import {UserInitializer} from "./UserInitializer";
 
 const queryClient = new QueryClient();
 
@@ -106,22 +111,24 @@ export default function App() {
       <StoreProvider>
         <QueryClientProvider client={queryClient}>
           <CssBaseline/>
+          <UserInitializer/>
           <Router>
             <Container maxWidth="lg">
               <Header title="Social Hub" sections={sections}/>
               <Routes>
                 <Route path="/" element={<Main sidebar={sidebar} posts={posts}/>}/>
                 <Route path="/signup" element={<SignUp/>}/>
+                <Route path="/signin" element={<SignIn/>}/>
               </Routes>
             </Container>
           </Router>
           <Footer
-            title="Footer"
-            description="Something here to give the footer a purpose!"
+            title="Social Hub App"
+            description="Because we need even more social media networks in the world."
           />
           <ReactQueryDevtools initialIsOpen/>
         </QueryClientProvider>
-        <Message />
+        <Message/>
       </StoreProvider>
     </ThemeProvider>
   );

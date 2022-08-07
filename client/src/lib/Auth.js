@@ -1,0 +1,25 @@
+import {buildApiClient} from "./buildApiClient.js";
+
+
+export default class Auth {
+  static build() {
+    const apiClient = buildApiClient()
+    return new Auth(apiClient);
+  }
+
+  constructor(apiClient) {
+    this.apiClient = apiClient;
+  }
+
+  signUp(data) {
+    return this.apiClient.postRequest('signup', data);
+  }
+
+  signIn(data) {
+    return this.apiClient.postRequest('signin', data);
+  }
+
+  logOut() {
+    return this.apiClient.postRequest('logout');
+  }
+}

@@ -26,6 +26,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://localhost:5173', 'http://localhost:5173', 'https://localhost:8000', 'http://localhost:8000'
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -52,6 +56,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'social_hub.urls'
 

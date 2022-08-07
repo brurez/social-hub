@@ -11,14 +11,19 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import {useSignUp} from "../hooks/useSignUp.js";
 import useMessage from "../hooks/useMessage.jsx";
+import {useNavigate, Link as RouterLink} from "react-router-dom";
 
 export default function SignUp() {
-  const { showErrorMessage, showSuccessMessage  } = useMessage();
-  const { mutate: signUp } = useSignUp({
-    onError: ({ response }) => {
+  const {showErrorMessage, showSuccessMessage} = useMessage();
+  const navigate = useNavigate()
+  const {mutate: signUp} = useSignUp({
+    onError: ({response}) => {
       showErrorMessage(response.data.error.message)
     },
-    onSuccess: () => showSuccessMessage("You have successfully signed up!"),
+    onSuccess: () => {
+      showSuccessMessage("You have successfully signed up!");
+      navigate("/");
+    },
   });
 
   const handleSubmit = (event) => {
@@ -104,12 +109,6 @@ export default function SignUp() {
               id="password2"
             />
           </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={<Checkbox value="allowExtraEmails" color="primary"/>}
-              label="I want to receive inspiration, marketing promotions and updates via email."
-            />
-          </Grid>
         </Grid>
         <Button
           type="submit"
@@ -121,9 +120,11 @@ export default function SignUp() {
         </Button>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <Link href="#" variant="body2">
-              Already have an account? Sign in
-            </Link>
+            <RouterLink to={'/signin'}>
+              <Link variant="body2">
+                Already have an account? Sign in
+              </Link>
+            </RouterLink>
           </Grid>
         </Grid>
       </Box>
