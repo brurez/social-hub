@@ -15,6 +15,17 @@ import Footer from './components/Footer.jsx';
 import SignUp from "./components/SignUp";
 import {BrowserRouter as Router, Route, Link, Routes} from "react-router-dom";
 import Main from "./components/Main.jsx";
+import {
+  useQuery,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
+import {StoreProvider} from "./store/StoreProvider";
+import Message from "./components/Message.jsx";
+
+const queryClient = new QueryClient();
 
 const sections = [
   {title: 'Technology', url: '#'},
@@ -92,20 +103,26 @@ const theme = createTheme({
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline/>
-      <Router>
-        <Container maxWidth="lg">
-          <Header title="Social Hub" sections={sections}/>
-          <Routes>
-            <Route path="/" element={<Main sidebar={sidebar} posts={posts}/>}/>
-            <Route path="/signup" element={<SignUp/>}/>
-          </Routes>
-        </Container>
-      </Router>
-      <Footer
-        title="Footer"
-        description="Something here to give the footer a purpose!"
-      />
+      <StoreProvider>
+        <QueryClientProvider client={queryClient}>
+          <CssBaseline/>
+          <Router>
+            <Container maxWidth="lg">
+              <Header title="Social Hub" sections={sections}/>
+              <Routes>
+                <Route path="/" element={<Main sidebar={sidebar} posts={posts}/>}/>
+                <Route path="/signup" element={<SignUp/>}/>
+              </Routes>
+            </Container>
+          </Router>
+          <Footer
+            title="Footer"
+            description="Something here to give the footer a purpose!"
+          />
+          <ReactQueryDevtools initialIsOpen/>
+        </QueryClientProvider>
+        <Message />
+      </StoreProvider>
     </ThemeProvider>
   );
 }

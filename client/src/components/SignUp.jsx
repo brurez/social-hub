@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -10,31 +9,30 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import {createTheme, ThemeProvider} from '@mui/material/styles';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import {useSignUp} from "../hooks/useSignUp.js";
+import useMessage from "../hooks/useMessage.jsx";
 
 export default function SignUp() {
+  const { showErrorMessage, showSuccessMessage  } = useMessage();
+  const { mutate: signUp } = useSignUp({
+    onError: ({ response }) => {
+      showErrorMessage(response.data.error.message)
+    },
+    onSuccess: () => showSuccessMessage("You have successfully signed up!"),
+  });
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+    const formData = new FormData(event.target);
+    const data = {
+      email: formData.get('email'),
+      password: formData.get('password'),
+      password2: formData.get('password2'),
+      firstName: formData.get('firstName'),
+      lastName: formData.get('lastName'),
+    }
+    signUp(data);
+  }
 
   return (
     <Box
@@ -94,6 +92,16 @@ export default function SignUp() {
               type="password"
               id="password"
               autoComplete="new-password"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              fullWidth
+              name="password2"
+              label="Repeat the password"
+              type="password"
+              id="password2"
             />
           </Grid>
           <Grid item xs={12}>

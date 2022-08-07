@@ -1,7 +1,10 @@
 from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from api.ApiResponse import ApiResponse
+from api.AuthService import AuthService
 from api.models import User
+from rest_framework.decorators import api_view
+from rest_framework import status
 
 
 # Create your views here.
@@ -11,24 +14,22 @@ def index(request):
     return HttpResponse('This is the API root path')
 
 
+@api_view(['POST'])
 def signup(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        password2 = request.POST['password2']
+    email = request.data['email']
+    first_name = request.data['firstName']
+    last_name = request.data['lastName']
+    password = request.data['password']
+    password2 = request.data['password2']
 
-        if password == password2:
-            if User.objects.filter(username=username).exists():
-                messages.error(request, 'That username is taken')
-                return redirect('signup')
-            elif User.objects.filter(email=email).exists():
-                messages.error(request, 'That email is being used')
-                return redirect('signup')
-            else:
-                user = User.objects.create_user(username=username, email=email, password=password)
-                user.save()
-                messages.success(request, 'You are now registered and can log in')
-                return redirect('signin')
-        else:
-            messages.info(request, 'Passwords do not match')
+    try:
+        AuthService.sign_up(email, first_name, last_name, password, password2)
+        return ApiResponse(status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return ApiResponse(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def signin(request):
+    username = request.POST['username']
+    email = request.POST['email']
