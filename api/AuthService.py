@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User, auth
 
+from api.UserService import UserService
+
 
 class AuthService:
     @staticmethod
@@ -7,10 +9,9 @@ class AuthService:
         if password == password2:
             if User.objects.filter(email=email).exists():
                 raise Exception('That email is being used')
-            else:
-                user = User.objects.create_user(username=email, email=email, password=password, first_name=first_name,
-                                                last_name=last_name)
-                user.save()
+
+            return UserService.create_new_user(email, password, first_name, last_name)
+
         else:
             raise Exception('Passwords do not match')
 
@@ -22,6 +23,7 @@ class AuthService:
             return True
 
         raise Exception('Invalid credentials')
+
 
     @staticmethod
     def logout(request):

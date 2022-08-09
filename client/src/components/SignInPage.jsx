@@ -17,7 +17,7 @@ import {useCurrentUser} from "../hooks/useCurrentUser.js";
 import {useGetCurrentUser} from "../hooks/useGetCurrentUser.js";
 import Models from "../lib/Models.js";
 
-export default function SignIn() {
+export default function SignInPage() {
 
   const navigate = useNavigate()
   const {showErrorMessage, showSuccessMessage} = useMessage();

@@ -1,5 +1,9 @@
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 const serverUrl = 'http://localhost:8000';
+
 
 export default class ApiClient {
   constructor(client) {
@@ -7,12 +11,22 @@ export default class ApiClient {
   }
 
   async getRequest(path) {
-    const { data } = await this.httpClient.get(`${serverUrl}/api/${path}/`);
+    const {data} = await this.httpClient.get(`${serverUrl}/api/${path}/`, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrftoken": cookies.get("csrftoken"),
+      },
+    });
     return data;
   }
 
   async postRequest(path, params) {
-    const { data } = await this.httpClient.post(`${serverUrl}/api/${path}/`, params);
+    const {data} = await this.httpClient.post(`${serverUrl}/api/${path}/`, params, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrftoken": cookies.get("csrftoken"),
+      },
+    });
     return data;
   }
 

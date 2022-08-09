@@ -13,7 +13,7 @@ import {useSignUp} from "../hooks/useSignUp.js";
 import useMessage from "../hooks/useMessage.jsx";
 import {useNavigate, Link as RouterLink} from "react-router-dom";
 
-export default function SignUp() {
+export default function SignUpPage() {
   const {showErrorMessage, showSuccessMessage} = useMessage();
   const navigate = useNavigate()
   const {mutate: signUp} = useSignUp({

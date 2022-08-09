@@ -7,12 +7,8 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import Header from './components/Header.jsx';
-import MainFeaturedPost from './components/MainFeaturedPost.jsx';
-import FeaturedPost from './components/FeaturedPost.jsx';
-import Posts from './components/Posts.jsx';
-import Sidebar from './components/Sidebar.jsx';
 import Footer from './components/Footer.jsx';
-import SignUp from "./components/SignUp";
+import SignUpPage from "./components/SignUpPage.jsx";
 import {BrowserRouter as Router, Route, Link, Routes} from "react-router-dom";
 import Main from "./components/Main.jsx";
 import {
@@ -20,15 +16,12 @@ import {
   useQueryClient,
   QueryClient,
   QueryClientProvider,
-} from "@tanstack/react-query";
-import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
+} from "react-query";
 import {StoreProvider} from "./store/StoreProvider";
 import Message from "./components/Message.jsx";
-import SignIn from "./components/SignIn.jsx";
-import {useEffect} from "react";
-import {useCurrentUser} from "./hooks/useCurrentUser.js";
-import Models from "./lib/Models.js";
+import SignInPage from "./components/SignInPage.jsx";
 import {UserInitializer} from "./UserInitializer";
+import MyAccountPage from "./components/MyAccountPage";
 
 const queryClient = new QueryClient();
 
@@ -117,8 +110,9 @@ export default function App() {
               <Header title="Social Hub" sections={sections}/>
               <Routes>
                 <Route path="/" element={<Main sidebar={sidebar} posts={posts}/>}/>
-                <Route path="/signup" element={<SignUp/>}/>
-                <Route path="/signin" element={<SignIn/>}/>
+                <Route path="/signup" element={<SignUpPage/>}/>
+                <Route path="/signin" element={<SignInPage/>}/>
+                <Route path="/my-account" element={<MyAccountPage/>}/>
               </Routes>
             </Container>
           </Router>
@@ -126,7 +120,6 @@ export default function App() {
             title="Social Hub App"
             description="Because we need even more social media networks in the world."
           />
-          <ReactQueryDevtools initialIsOpen/>
         </QueryClientProvider>
         <Message/>
       </StoreProvider>

@@ -1,5 +1,5 @@
 import Auth from "../lib/Auth.js";
-import {useMutation} from "@tanstack/react-query";
+import {useMutation} from "react-query";
 
 const auth = Auth.build()
 

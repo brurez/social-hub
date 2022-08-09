@@ -13,4 +13,13 @@ export default class Models {
   getCurrentUser() {
     return this.apiClient.getRequest('current_user');
   }
+
+  updateUserProfile(data) {
+    return this.apiClient.postRequest('user_profile', data);
+  }
+
+  async getUserProfile(data) {
+    const res = await this.apiClient.getRequest('user_profile', data);
+    return res.data;
+  }
 }

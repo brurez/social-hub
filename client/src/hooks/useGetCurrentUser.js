@@ -1,4 +1,4 @@
-import {useQuery} from "@tanstack/react-query";
+import {useQuery} from "react-query";
 import Models from "../lib/Models.js";
 
 const models = Models.build()

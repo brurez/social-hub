@@ -1,15 +1,15 @@
 from django.http import HttpResponse
 
+from api.UserService import UserService
 from api.ApiError import ApiError
 from api.ApiResponse import ApiResponse
 from api.AuthService import AuthService
 from rest_framework.decorators import api_view
 from rest_framework import status
-from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 from api.models import User
-from api.serializers import UserSerializer
+from api.serializers import UserSerializer, ProfileSerializer
 
 
 def index(request):
@@ -19,8 +19,8 @@ def index(request):
 @api_view(['POST'])
 def signup(request):
     email = request.data['email']
-    first_name = request.data['firstName']
-    last_name = request.data['lastName']
+    first_name = request.data['first_name']
+    last_name = request.data['last_name']
     password = request.data['password']
     password2 = request.data['password2']
 
@@ -53,7 +53,10 @@ def logout(request):
 @api_view(['GET'])
 def get_current_user(request):
     try:
-        user = User.objects.get(username=request.user.username)
+        if request.user.is_authenticated is False:
+            raise ApiError('You need to be logged in', status.HTTP_401_UNAUTHORIZED)
+
+        user = User.objects.get(email=request.user.email)
         if user is None:
             raise ApiError('User not found', status.HTTP_401_UNAUTHORIZED)
 
@@ -61,3 +64,41 @@ def get_current_user(request):
         return ApiResponse(data=serializer.data)
     except ApiError as e:
         return ApiResponse(error_message=str(e), status=e.status)
+    except Exception as e:
+        return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['POST', 'GET'])
+def user_profile(request):
+    try:
+        if request.user.is_authenticated is False:
+            raise ApiError('You need to be logged in', status.HTTP_401_UNAUTHORIZED)
+    except ApiError as e:
+        return ApiResponse(error_message=str(e), status=e.status)
+
+    email = request.user.email
+
+    if request.method == 'POST':
+        first_name = request.data['first_name']
+        last_name = request.data['last_name']
+        location = request.data['location']
+        biography = request.data['biography']
+        profile_pic = request.data.get('profile_pic')
+
+        try:
+            UserService.update_user_profile(email, first_name, last_name, location, biography,
+                                            profile_pic)
+            user = UserService.get_user_by_email(email)
+            user_serializer = UserSerializer(user)
+            return ApiResponse(data=user_serializer.data)
+        except Exception as e:
+            return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    if request.method == 'GET':
+        try:
+            profile = UserService.get_user_profile(email)
+            profile_serializer = ProfileSerializer(profile)
+            return ApiResponse(data=profile_serializer.data)
+
+        except Exception as e:
+            return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)

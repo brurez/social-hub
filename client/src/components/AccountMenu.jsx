@@ -13,13 +13,16 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import {useCurrentUser} from "../hooks/useCurrentUser.js";
 import {useLogOut} from "../hooks/useLogOut.js";
+import {useNavigate} from "react-router-dom"
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {currentUser, clearCurrentUser} = useCurrentUser();
+  const navigate = useNavigate();
   const {mutate: logOut} = useLogOut({
     onSuccess: () => {
       clearCurrentUser();
+      navigate('/');
     }
   });
 
@@ -35,6 +38,7 @@ export default function AccountMenu() {
     logOut();
     handleClose();
   }
+
   return (
     <React.Fragment>
       <Box sx={{display: 'flex', alignItems: 'center', textAlign: 'center'}}>
@@ -47,7 +51,8 @@ export default function AccountMenu() {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{width: 32, height: 32}}>{currentUser.firstName[0].toUpperCase()}</Avatar>
+            <Avatar
+              sx={{width: 32, height: 32}}>{currentUser.firstName && currentUser.firstName[0].toUpperCase()}</Avatar>
           </IconButton>
         </Tooltip>
       </Box>
@@ -89,7 +94,7 @@ export default function AccountMenu() {
         <MenuItem>
           <Avatar/> Profile
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={() => navigate("/my-account")}>
           <Avatar/> My account
         </MenuItem>
         <Divider/>
