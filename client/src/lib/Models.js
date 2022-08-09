@@ -15,7 +15,11 @@ export default class Models {
   }
 
   updateUserProfile(data) {
-    return this.apiClient.postRequest('user_profile', data);
+    return this.apiClient.postRequest('user_profile', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
   }
 
   async getUserProfile(data) {

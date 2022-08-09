@@ -20,11 +20,12 @@ export default class ApiClient {
     return data;
   }
 
-  async postRequest(path, params) {
+  async postRequest(path, params, options = { headers: {}}) {
     const {data} = await this.httpClient.post(`${serverUrl}/api/${path}/`, params, {
       headers: {
         "Content-Type": "application/json",
         "x-csrftoken": cookies.get("csrftoken"),
+        ...options.headers,
       },
     });
     return data;

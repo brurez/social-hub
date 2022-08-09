@@ -9,9 +9,9 @@ import {useUpdateUserProfile} from "../hooks/useUpdateUserProfile.js";
 import useMessage from "../hooks/useMessage.jsx";
 import Models from "../lib/Models.js";
 import {useGetUserProfile} from "../hooks/useGetUserProfile.js";
+import {DEFAULT_PROFILE_PIC, SERVER_URL} from "../../env.js";
 
 export default function MyAccountPage() {
-
   const {showErrorMessage, showSuccessMessage} = useMessage();
   const {currentUser, setCurrentUser} = useCurrentUser()
   const {data: profile, isLoading: isProfileLoading} = useGetUserProfile()
@@ -29,14 +29,7 @@ export default function MyAccountPage() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const data = {
-      firstName: formData.get('firstName'),
-      lastName: formData.get('lastName'),
-      biography: formData.get('biography'),
-      location: formData.get('location'),
-      profilePic: formData.get('profilePic'),
-    }
-    updateUserProfile(data);
+    updateUserProfile(formData);
   }
 
   if (!currentUser) return <div>Loading...</div>
@@ -81,6 +74,13 @@ export default function MyAccountPage() {
           </Grid>
           {!isProfileLoading && (
             <>
+              <Grid item xs={12} ml={1}>
+                <Typography variant="caption" color={"text.secondary"} mr={2}>Profile picture</Typography>
+                <input type={"file"} name={"profilePic"} id={"profilePic"} />
+              </Grid>
+              <Grid item xs={12} ml={1}>
+                <img height={200} src={(SERVER_URL + profile.profilePic) || DEFAULT_PROFILE_PIC} alt={"profile pic"} />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   defaultValue={profile.biography}
