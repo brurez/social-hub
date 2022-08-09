@@ -14,7 +14,7 @@ import VisitorMenu from "./VisitorMenu.jsx";
 import {useCurrentUser} from "../hooks/useCurrentUser.js";
 
 function Header(props) {
-  const {sections, title} = props;
+  const {title} = props;
   const { isLoggedIn } = useCurrentUser();
 
   return (
@@ -37,36 +37,9 @@ function Header(props) {
         </IconButton>
         { isLoggedIn ? <AccountMenu/> : <VisitorMenu/> }
       </Toolbar>
-      <Toolbar
-        component="nav"
-        variant="dense"
-        sx={{justifyContent: 'space-between', overflowX: 'auto'}}
-      >
-        {sections.map((section) => (
-          <Link
-            color="inherit"
-            noWrap
-            key={section.title}
-            variant="body2"
-            href={section.url}
-            sx={{p: 1, flexShrink: 0}}
-          >
-            {section.title}
-          </Link>
-        ))}
-      </Toolbar>
+
     </React.Fragment>
   );
 }
-
-Header.propTypes = {
-  sections: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
-  title: PropTypes.string.isRequired,
-};
 
 export default Header;

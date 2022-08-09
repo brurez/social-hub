@@ -39,3 +39,8 @@ class UserService:
     def get_profiles():
         profiles = Profile.objects.all()
         return profiles
+
+    @staticmethod
+    def get_profile(profile_id):
+        profile = Profile.objects.get(id=profile_id)
+        return profile

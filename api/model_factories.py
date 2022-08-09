@@ -21,3 +21,13 @@ class ProfileFactory(factory.django.DjangoModelFactory):
     profile_pic = factory.Faker('image_url')
     user = factory.SubFactory(UserFactory)
 
+
+class StatusPostFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = StatusPost
+
+    title = factory.Faker('sentence')
+    description = factory.Faker('text')
+    image = factory.Faker('image_url')
+    user = factory.SubFactory(UserFactory)
+    created_at = factory.Faker('date_time')

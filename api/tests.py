@@ -19,6 +19,7 @@ class RestAPITestCase(APITestCase):
         self.factory = APIRequestFactory()
         self.user = UserFactory.create()
         self.profile = ProfileFactory.create(user=self.user)
+        self.status_post = StatusPostFactory.create(user=self.user)
 
     def test_signup(self):
         response = self.client.post('/api/signup/',
@@ -84,3 +85,25 @@ class RestAPITestCase(APITestCase):
         self.assertEqual(self.profile.biography, result["data"][0]['biography'])
         self.assertEqual(self.profile.location, result["data"][0]['location'])
         self.assertEqual(self.profile.profile_pic.url, result["data"][0]['profile_pic'])
+
+    def test_get_status_posts(self):
+        self.client.force_login(self.user)
+        response = self.client.get('/api/status_posts/')
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        result = response.json()
+        self.assertEqual(self.status_post.description, result["data"][0]['description'])
+        self.assertEqual(self.status_post.title, result["data"][0]['title'])
+        self.assertEqual(self.status_post.image.url, result["data"][0]['image'])
+        self.assertEqual(self.status_post.user.first_name, result["data"][0]['user']['first_name'])
+        self.assertEqual(self.status_post.user.last_name, result["data"][0]['user']['last_name'])
+
+    def test_get_status_post(self):
+        self.client.force_login(self.user)
+        response = self.client.get('/api/status_posts/' + str(self.status_post.id) + '/')
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        result = response.json()
+        self.assertEqual(self.status_post.description, result["data"]['description'])
+        self.assertEqual(self.status_post.title, result["data"]['title'])
+        self.assertEqual(self.status_post.image.url, result["data"]['image'])
+        self.assertEqual(self.status_post.user.first_name, result["data"]['user']['first_name'])
+        self.assertEqual(self.status_post.user.last_name, result["data"]['user']['last_name'])

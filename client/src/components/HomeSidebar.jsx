@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import {useGetProfiles} from "../hooks/useGetUsersToFollow.js";
+import {useGetProfiles} from "../hooks/useGetProfiles.js";
 import {SERVER_URL} from "../../env.js";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -26,18 +26,18 @@ function ProfileItem(props) {
 
 function HomeSidebar(props) {
   const {data: profiles, isLoading: isProfilesLoading} = useGetProfiles()
-  const { currentUser } = useCurrentUser()
+  const {currentUser} = useCurrentUser()
 
-  const profilesToFollow = profiles.filter(profile => profile.user.id !== currentUser.id)
+  const profilesToFollow = isProfilesLoading ? [] : profiles.filter(profile => profile.user.id !== currentUser.id)
 
   return (
     <Grid item xs={12} md={4}>
+      <Typography variant="h6" gutterBottom>
+        Who to follow
+      </Typography>
       <Paper sx={{p: 2}}>
-        <Typography variant="h6" gutterBottom>
-          Who to follow
-        </Typography>
         <Stack direction="row" spacing={1} alignItems="center">
-          {!isProfilesLoading && profilesToFollow.map((profile) => (
+          {profilesToFollow.map((profile) => (
             <ProfileItem profile={profile}/>
           ))}
         </Stack>

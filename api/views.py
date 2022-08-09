@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 
+from api.StatusPostService import StatusPostService
 from api.UserService import UserService
 from api.ApiError import ApiError
 from api.ApiResponse import ApiResponse
@@ -9,7 +10,7 @@ from rest_framework import status
 
 # Create your views here.
 from api.models import User
-from api.serializers import UserSerializer, ProfileSerializer
+from api.serializers import UserSerializer, ProfileSerializer, StatusPostSerializer
 
 
 def index(request):
@@ -105,10 +106,39 @@ def user_profile(request):
 
 
 @api_view(['GET'])
-def profiles(request):
+def profiles(request, profile_id=None):
     try:
-        all_profiles = UserService.get_profiles()
-        profile_serializer = ProfileSerializer(all_profiles, many=True)
-        return ApiResponse(data=profile_serializer.data)
+        if profile_id is not None:
+            one_profile = UserService.get_profile(profile_id)
+            profile_serializer = ProfileSerializer(one_profile)
+            return ApiResponse(data=profile_serializer.data)
+        else:
+            all_profiles = UserService.get_profiles()
+            profile_serializer = ProfileSerializer(all_profiles, many=True)
+            return ApiResponse(data=profile_serializer.data)
+    except Exception as e:
+        return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET', 'POST'])
+def status_posts(request, status_post_id=None):
+    try:
+        if request.method == 'GET':
+            if status_post_id is not None:
+                one_status_post = StatusPostService.get_status_post(status_post_id)
+                status_post_serializer = StatusPostSerializer(one_status_post)
+                return ApiResponse(data=status_post_serializer.data)
+            else:
+                all_status_posts = StatusPostService.get_status_posts()
+                status_post_serializer = StatusPostSerializer(all_status_posts, many=True)
+                return ApiResponse(data=status_post_serializer.data)
+
+        if request.method == 'POST':
+            title = request.data['title']
+            description = request.data['description']
+            image = request.data.get('image')
+            user = request.user
+            StatusPostService.create_status_post({"title": title, "description": description, "image": image, "user": user})
+            return ApiResponse()
     except Exception as e:
         return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
