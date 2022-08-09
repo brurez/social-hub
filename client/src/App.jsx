@@ -10,7 +10,7 @@ import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 import SignUpPage from "./components/SignUpPage.jsx";
 import {BrowserRouter as Router, Route, Link, Routes} from "react-router-dom";
-import Main from "./components/Main.jsx";
+import HomePage from "./components/HomePage.jsx";
 import {
   useQuery,
   useQueryClient,
@@ -109,7 +109,7 @@ export default function App() {
             <Container maxWidth="lg">
               <Header title="Social Hub" sections={sections}/>
               <Routes>
-                <Route path="/" element={<Main sidebar={sidebar} posts={posts}/>}/>
+                <Route path="/" element={<HomePage sidebar={sidebar} posts={posts}/>}/>
                 <Route path="/signup" element={<SignUpPage/>}/>
                 <Route path="/signin" element={<SignInPage/>}/>
                 <Route path="/my-account" element={<MyAccountPage/>}/>

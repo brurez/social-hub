@@ -102,3 +102,13 @@ def user_profile(request):
 
         except Exception as e:
             return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+def profiles(request):
+    try:
+        all_profiles = UserService.get_profiles()
+        profile_serializer = ProfileSerializer(all_profiles, many=True)
+        return ApiResponse(data=profile_serializer.data)
+    except Exception as e:
+        return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)

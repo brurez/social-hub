@@ -34,3 +34,8 @@ class UserService:
         user = User.objects.get(email=email)
         profile = Profile.objects.get(user=user)
         return profile
+
+    @staticmethod
+    def get_profiles():
+        profiles = Profile.objects.all()
+        return profiles

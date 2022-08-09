@@ -26,4 +26,9 @@ export default class Models {
     const res = await this.apiClient.getRequest('user_profile', data);
     return res.data;
   }
+
+  async getProfiles() {
+    const res = await this.apiClient.getRequest('profiles');
+    return res.data;
+  }
 }

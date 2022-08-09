@@ -20,7 +20,6 @@ class RestAPITestCase(APITestCase):
         self.user = UserFactory.create()
         self.profile = ProfileFactory.create(user=self.user)
 
-
     def test_signup(self):
         response = self.client.post('/api/signup/',
                                     format='json',
@@ -74,3 +73,14 @@ class RestAPITestCase(APITestCase):
         self.assertEqual(self.user.last_name, result["data"]['last_name'])
         self.assertEqual(self.user.email, result["data"]['email'])
 
+    def test_get_profiles(self):
+        self.client.force_login(self.user)
+        response = self.client.get('/api/profiles/')
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        result = response.json()
+        self.assertEqual(self.user.first_name, result["data"][0]['user']['first_name'])
+        self.assertEqual(self.user.last_name, result["data"][0]['user']['last_name'])
+        self.assertEqual(self.user.email, result["data"][0]['user']['email'])
+        self.assertEqual(self.profile.biography, result["data"][0]['biography'])
+        self.assertEqual(self.profile.location, result["data"][0]['location'])
+        self.assertEqual(self.profile.profile_pic.url, result["data"][0]['profile_pic'])
