@@ -12,6 +12,7 @@ import Typography from '@mui/material/Typography';
 import {useSignUp} from "../hooks/useSignUp.js";
 import useMessage from "../hooks/useMessage.jsx";
 import {useNavigate, Link as RouterLink} from "react-router-dom";
+import FormSection from "./FormSection";
 
 export default function SignUpPage() {
   const {showErrorMessage, showSuccessMessage} = useMessage();
@@ -40,15 +41,7 @@ export default function SignUpPage() {
   }
 
   return (
-    <Box
-      sx={{
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        maxWidth: 800
-      }}
-    >
+    <FormSection>
       <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
         <LockOutlinedIcon/>
       </Avatar>
@@ -128,6 +121,6 @@ export default function SignUpPage() {
           </Grid>
         </Grid>
       </Box>
-    </Box>
+    </FormSection>
   );
 }

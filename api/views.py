@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 
+from api.ProfileService import ProfileService
 from api.StatusPostService import StatusPostService
 from api.UserService import UserService
 from api.ApiError import ApiError
@@ -9,7 +10,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 
 # Create your views here.
-from api.models import User
+from api.models import User, Profile
 from api.serializers import UserSerializer, ProfileSerializer, StatusPostSerializer
 
 
@@ -58,14 +59,17 @@ def get_current_user(request):
             raise ApiError('You need to be logged in', status.HTTP_401_UNAUTHORIZED)
 
         user = User.objects.get(email=request.user.email)
+        profile = Profile.objects.get(user=user)
         if user is None:
             raise ApiError('User not found', status.HTTP_401_UNAUTHORIZED)
 
         serializer = UserSerializer(user)
-        return ApiResponse(data=serializer.data)
+        return ApiResponse(data={**serializer.data, "profile_id": profile.id})
     except ApiError as e:
+        print(e)
         return ApiResponse(error_message=str(e), status=e.status)
     except Exception as e:
+        print(e)
         return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -138,7 +142,33 @@ def status_posts(request, status_post_id=None):
             description = request.data['description']
             image = request.data.get('image')
             user = request.user
-            StatusPostService.create_status_post({"title": title, "description": description, "image": image, "user": user})
+            StatusPostService.create_status_post(
+                {"title": title, "description": description, "image": image, "user": user})
             return ApiResponse()
     except Exception as e:
+        return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET', 'POST'])
+def profile_friendships(request, profile_id):
+    user = request.user
+    try:
+        if request.method == 'GET':
+            profile = Profile.objects.get(id=profile_id)
+            friend_profiles = ProfileService.get_friends(profile.id)
+            serializer = ProfileSerializer(friend_profiles, many=True)
+            return ApiResponse(data=serializer.data)
+
+        if request.method == 'POST':
+            profile = Profile.objects.get(user_id=user.id)
+            if profile_id != profile.id:
+                raise ApiError('You can only add friendships to your own profile', status.HTTP_401_UNAUTHORIZED)
+            friend_profile_id = request.data['friend_profile_id']
+            ProfileService.create_friendship(profile.id, friend_profile_id)
+            return ApiResponse(status=status.HTTP_201_CREATED)
+    except ApiError as e:
+        print(e)
+        return ApiResponse(error_message=str(e), status=e.status)
+    except Exception as e:
+        print(e)
         return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)

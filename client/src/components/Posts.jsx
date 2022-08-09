@@ -56,7 +56,9 @@ function Posts() {
   const {currentUser} = useCurrentUser()
   const {data: posts, isLoading: isPostsLoading} = useGetStatusPosts()
 
-  const postsFromOthers = isPostsLoading ? [] : posts.filter(post => post.user.id === currentUser.id)
+  const currentUserId = currentUser ? currentUser.id : null
+
+  const postsFromOthers = isPostsLoading ? [] : posts.filter(post => post.user.id !== currentUserId)
 
   return (
     <Grid

@@ -50,4 +50,21 @@ export default class Models {
     })
     return res.data;
   }
+
+  async getProfile(profileId) {
+    const res = await this.apiClient.getRequest(`profiles/${profileId}`);
+    return res.data;
+  }
+
+  async createFriendship(profileId1, profileId2) {
+    const res = await this.apiClient.postRequest(`profiles/${profileId1}/friendships`, {
+      friendProfileId: profileId2
+    });
+    return res.data;
+  }
+
+  async getProfileFriends(profileId) {
+    const res = await this.apiClient.getRequest(`profiles/${profileId}/friendships`);
+    return res.data;
+  }
 }

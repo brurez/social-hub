@@ -11,6 +11,7 @@ import Models from "../lib/Models.js";
 import {useGetUserProfile} from "../hooks/useGetUserProfile.js";
 import {DEFAULT_PROFILE_PIC, SERVER_URL} from "../../env.js";
 import {useNavigate} from "react-router-dom";
+import FormSection from "./FormSection";
 
 export default function MyAccountPage() {
   const {showErrorMessage, showSuccessMessage} = useMessage();
@@ -38,15 +39,7 @@ export default function MyAccountPage() {
   if (!currentUser) return <div>Loading...</div>
 
   return (
-    <Box
-      sx={{
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        maxWidth: 800
-      }}
-    >
+    <FormSection>
       <Typography component="h1" variant="h5">
         General ({currentUser.email})
       </Typography>
@@ -126,6 +119,6 @@ export default function MyAccountPage() {
         </Button>
         </Box>
       </Box>
-    </Box>
+    </FormSection>
   );
 }

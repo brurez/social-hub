@@ -39,7 +39,7 @@ export const ShowPostPage = () => {
 }
 
 export function DisplayPost({post}) {
-  const {currentUser} = useCurrentUser()
+  const {isCurrentUser} = useCurrentUser()
   const navigate = useNavigate()
   return (
     <FormSection>
@@ -59,7 +59,7 @@ export function DisplayPost({post}) {
       </Box>
       <Box mt={4}>
         <Button onClick={() => navigate("/")}>Back to the home page</Button>
-        {currentUser.id === post.user.id && <Button onClick={() => navigate(`/posts/${post.id}/edit`)}>Edit</Button>}
+        {isCurrentUser(post.user.id) && <Button onClick={() => navigate(`/posts/${post.id}/edit`)}>Edit</Button>}
       </Box>
     </FormSection>
   )

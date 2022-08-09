@@ -20,10 +20,15 @@ export function useCurrentUser() {
 
   const currentUser = state.currentUser ? state.currentUser : undefined
 
+  function isCurrentUser(userId) {
+    return currentUser && currentUser.id === userId;
+  }
+
   return {
     currentUser,
     isLoggedIn: !!currentUser,
     setCurrentUser,
     clearCurrentUser,
+    isCurrentUser,
   }
 }

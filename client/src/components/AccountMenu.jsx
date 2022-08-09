@@ -91,7 +91,7 @@ export default function AccountMenu() {
         transformOrigin={{horizontal: 'right', vertical: 'top'}}
         anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
       >
-        <MenuItem>
+        <MenuItem onClick={() => navigate("/profiles/" + currentUser.profileId)}>
           <Avatar/> Profile
         </MenuItem>
         <MenuItem onClick={() => navigate("/my-account")}>
@@ -106,7 +106,7 @@ export default function AccountMenu() {
         </MenuItem>
         <MenuItem onClick={handleLogOutClick}>
           <ListItemIcon>
-            <Logout fontSize="small"/>
+            <Logout fontSize="small" onClick={logOut}/>
           </ListItemIcon>
           Logout
         </MenuItem>

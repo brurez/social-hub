@@ -23,6 +23,7 @@ import SignInPage from "./components/SignInPage.jsx";
 import {UserInitializer} from "./UserInitializer";
 import MyAccountPage from "./components/MyAccountPage";
 import {CreatePostPage, EditPostPage, ShowPostPage} from "./components/PostPages.jsx";
+import ProfilePage from "./components/ProfilePage.jsx";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ export default function App() {
                 <Route path="/posts/create" element={<CreatePostPage/>}/>
                 <Route path="/posts/:postId/edit" element={<EditPostPage/>}/>
                 <Route path="/posts/:postId" element={<ShowPostPage/>}/>
+                <Route path="/profiles/:profileId" element={<ProfilePage/>}/>
               </Routes>
             </Container>
           </Router>

@@ -16,6 +16,7 @@ import useMessage from "../hooks/useMessage.jsx";
 import {useCurrentUser} from "../hooks/useCurrentUser.js";
 import {useGetCurrentUser} from "../hooks/useGetCurrentUser.js";
 import Models from "../lib/Models.js";
+import FormSection from "./FormSection";
 
 export default function SignInPage() {
 
@@ -47,7 +48,7 @@ export default function SignInPage() {
   };
 
   return (
-    <Grid container component="main" sx={{height: '100vh'}}>
+    <FormSection>
       <Grid
         item
         xs={false}
@@ -123,6 +124,6 @@ export default function SignInPage() {
           </Box>
         </Box>
       </Grid>
-    </Grid>
+    </FormSection>
   );
 }

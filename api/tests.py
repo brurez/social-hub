@@ -4,6 +4,7 @@ import django
 from rest_framework import status
 
 from api.models import User
+from .ProfileService import ProfileService
 from .model_factories import *
 
 sys.path.append('/home/bruno/Code/bsc/social_hub')
@@ -18,7 +19,9 @@ class RestAPITestCase(APITestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
         self.user = UserFactory.create()
+        self.another_user = UserFactory.create()
         self.profile = ProfileFactory.create(user=self.user)
+        self.another_profile = ProfileFactory.create(user=self.another_user)
         self.status_post = StatusPostFactory.create(user=self.user)
 
     def test_signup(self):
@@ -107,3 +110,22 @@ class RestAPITestCase(APITestCase):
         self.assertEqual(self.status_post.image.url, result["data"]['image'])
         self.assertEqual(self.status_post.user.first_name, result["data"]['user']['first_name'])
         self.assertEqual(self.status_post.user.last_name, result["data"]['user']['last_name'])
+
+    def test_create_friendship(self):
+        self.client.force_login(self.user)
+        response = self.client.post('/api/profiles/' + str(self.profile.id) + '/friendships/',
+                                    format='json',
+                                    data={'friend_profile_id': self.another_profile.id})
+        self.assertEqual(status.HTTP_201_CREATED, response.status_code)
+        friendship = Friendship.objects.get(profile=self.profile, friend_profile=self.another_profile)
+        self.assertIsNotNone(friendship)
+
+    def test_get_friendships(self):
+        ProfileService.create_friendship(self.profile.id, self.another_profile.id)
+        self.client.force_login(self.user)
+        response = self.client.get('/api/profiles/' + str(self.profile.id) + '/friendships/')
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        result = response.json()
+        self.assertEqual(self.another_profile.id, result["data"][0]['id'])
+        self.assertEqual(self.another_profile.user.first_name, result["data"][0]['user']['first_name'])
+        self.assertEqual(self.another_profile.user.last_name, result["data"][0]['user']['last_name'])

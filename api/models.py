@@ -25,3 +25,15 @@ class StatusPost(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Friendship(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    friend_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='friend_profile')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('profile', 'friend_profile')
+
+    def __str__(self):
+        return self.profile.user.first_name + ' ' + self.friend_profile.user.first_name
