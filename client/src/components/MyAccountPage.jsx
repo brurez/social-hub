@@ -10,6 +10,7 @@ import useMessage from "../hooks/useMessage.jsx";
 import Models from "../lib/Models.js";
 import {useGetUserProfile} from "../hooks/useGetUserProfile.js";
 import {DEFAULT_PROFILE_PIC, SERVER_URL} from "../../env.js";
+import {useNavigate} from "react-router-dom";
 
 export default function MyAccountPage() {
   const {showErrorMessage, showSuccessMessage} = useMessage();
@@ -25,6 +26,8 @@ export default function MyAccountPage() {
       showErrorMessage(response.data.error.message)
     }
   })
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -106,14 +109,22 @@ export default function MyAccountPage() {
 
           )}
         </Grid>
+        <Box mt={3} display={"flex"} justifyContent={"space-around"}>
+        <Button
+          onClick={() => navigate("/")}
+          variant="outlined"
+          sx={{width: "30%"}}
+        >
+          Cancel
+        </Button>
         <Button
           type="submit"
-          fullWidth
           variant="contained"
-          sx={{mt: 3, mb: 2}}
+          sx={{width: "30%"}}
         >
           Save
         </Button>
+        </Box>
       </Box>
     </Box>
   );
