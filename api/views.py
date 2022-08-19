@@ -172,3 +172,14 @@ def profile_friendships(request, profile_id):
     except Exception as e:
         print(e)
         return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+def search_profiles(request):
+    try:
+        query = request.GET.get('q')
+        profiles = ProfileService.search_profiles_by_name(query)
+        serializer = ProfileSerializer(profiles, many=True)
+        return ApiResponse(data=serializer.data)
+    except Exception as e:
+        return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)

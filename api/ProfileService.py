@@ -1,4 +1,6 @@
-from api.models import Friendship, Profile
+from django.db.models import Q
+
+from api.models import Friendship, Profile, User
 
 
 class ProfileService:
@@ -12,3 +14,9 @@ class ProfileService:
     @staticmethod
     def create_friendship(profile_id, friend_profile_id):
         Friendship.objects.create(profile_id=profile_id, friend_profile_id=friend_profile_id)
+
+    @staticmethod
+    def search_profiles_by_name(query):
+        users = User.objects.filter(Q(first_name__icontains=query) | Q(last_name__icontains=query))[:10]
+        profiles = Profile.objects.filter(user__in=users)
+        return profiles

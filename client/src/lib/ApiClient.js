@@ -5,8 +5,8 @@ export default class ApiClient {
     this.httpClient = client;
   }
 
-  async getRequest(path) {
-    const {data} = await this.httpClient.get(`${serverUrl}/api/${path}/`, {
+  async getRequest(path, { trailSlash = true } = {}) {
+    const {data} = await this.httpClient.get(`${serverUrl}/api/${path}${trailSlash ? '/' : ''}`, {
       headers: {
         "Content-Type": "application/json",
         "x-csrftoken": this.#getCookie("csrftoken"),

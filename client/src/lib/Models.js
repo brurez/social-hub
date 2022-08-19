@@ -67,4 +67,9 @@ export default class Models {
     const res = await this.apiClient.getRequest(`profiles/${profileId}/friendships`);
     return res.data;
   }
+
+  async getProfilesSearch(q) {
+    const res = await this.apiClient.getRequest(`profiles/search/?q=${q}`, { trailSlash: false });
+    return res.data;
+  }
 }

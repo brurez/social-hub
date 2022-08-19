@@ -3,7 +3,6 @@ import sys
 import django
 from rest_framework import status
 
-from api.models import User
 from .ProfileService import ProfileService
 from .model_factories import *
 
@@ -124,6 +123,15 @@ class RestAPITestCase(APITestCase):
         ProfileService.create_friendship(self.profile.id, self.another_profile.id)
         self.client.force_login(self.user)
         response = self.client.get('/api/profiles/' + str(self.profile.id) + '/friendships/')
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        result = response.json()
+        self.assertEqual(self.another_profile.id, result["data"][0]['id'])
+        self.assertEqual(self.another_profile.user.first_name, result["data"][0]['user']['first_name'])
+        self.assertEqual(self.another_profile.user.last_name, result["data"][0]['user']['last_name'])
+
+    def test_search_profiles(self):
+        self.client.force_login(self.user)
+        response = self.client.get('/api/profiles/search/?q=' + self.user.first_name[0:3])
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         result = response.json()
         self.assertEqual(self.another_profile.id, result["data"][0]['id'])

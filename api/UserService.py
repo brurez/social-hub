@@ -1,6 +1,5 @@
 from api.models import User, Profile
 
-
 class UserService:
 
     @staticmethod
