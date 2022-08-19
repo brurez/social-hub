@@ -41,27 +41,27 @@ export default function ProfilePage() {
   }
 
   const _friendProfiles = isFriendProfilesLoading ? [] : friendProfiles;
-
+  console.log(profile)
   return (
     <FormSection>
       <Typography variant={"h4"} component={"h1"}
                   mb={4}>{profile.user.firstName + " " + profile.user.lastName}</Typography>
       <Grid container spacing={5}>
         <Grid item xs={12} md={4}>
-          <img height={200}
+          <img width={"100%"}
                src={profile.profilePic ? SERVER_URL + profile.profilePic : "https://picsum.photos/200?blur=10?random=" + profile.id}/>
         </Grid>
         <Grid item xs={12} md={8}>
-          <Typography variant={"body1"} mb={4}>{profile.bio}</Typography>
+          <Typography variant={"body2"} mb={4}>{profile.biography}</Typography>
         </Grid>
       </Grid>
       <Box display={"flex"} justifyContent={"space-between"} mt={2}>
-        <Typography variant={"subtitle2"} color={"text.secondary"} gutterBottom>
-          {profile.location}
+        <Typography variant={"subtitle1"} gutterBottom>
+          Location: {profile.location}
         </Typography>
       </Box>
       <Box display={"flex"} alignItems={"center"} flexDirection={"column"} mt={2}>
-        <Typography variant={"h5"} component={"h2"}>{profile.user.firstName} friends</Typography>
+        <Typography variant={"h5"} mb={2} component={"h2"}>{profile.user.firstName}'s friends</Typography>
         {_friendProfiles.length === 0 ? <Typography mt={2} variant={"body1"}>No friends so far...</Typography> : (
           <Stack direction={"row"}>
             {_friendProfiles.map((profile) => (
@@ -72,7 +72,7 @@ export default function ProfilePage() {
       <Stack mt={4} direction={"row"} spacing={2}>
         <Button onClick={() => navigate("/")}>Back to the home page</Button>
         {isCurrentUser(profile.user.id) ?
-          <Button variant={"outlined"} onClick={() => navigate(`/profiles/${profile.id}/edit`)}>Edit</Button> :
+          <Button variant={"outlined"} onClick={() => navigate(`/my-account`)}>Edit</Button> :
           <Button disabled={!isLoggedIn} variant={"contained"} onClick={handleFriendshipClick}>Add as friend</Button>
         }
       </Stack>

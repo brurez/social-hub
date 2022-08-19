@@ -41,7 +41,7 @@ export default function MyAccountPage() {
   return (
     <FormSection>
       <Typography component="h1" variant="h5">
-        General ({currentUser.email})
+        My Account ({currentUser.email})
       </Typography>
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
         <Grid container spacing={2}>

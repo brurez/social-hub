@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 import * as React from "react";
 
 export function ProfileItem(props) {
-  return <Box width={"100%"}>
+  return <Box width={"100%"} key={props.profile.id}>
     <RouterLink to={"/profiles/" + props.profile.id}>
       <img height={20} src={SERVER_URL + props.profile.profilePic}
            alt={props.profile.user.firstName + " " + props.profile.user.lastName}/>
