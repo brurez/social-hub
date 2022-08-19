@@ -27,7 +27,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://localhost:5173', 'http://localhost:5173', 'https://localhost:8000', 'http://localhost:8000'
+    'https://localhost:5173', 'http://localhost:5173', 'https://localhost:8000', 'http://localhost:8000',
+    'http://127.0.0.1:5173', 'https://127.0.0.1:5173'
 ]
 
 # Application definition
@@ -131,9 +132,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Cookie settings
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SAMESITE = 'None'
