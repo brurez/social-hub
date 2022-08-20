@@ -3,7 +3,8 @@ import { reducers } from "./reducers";
 
 // Initial Store state used by the Reducers
 const initialState = {
-  message: { open: false, text: "", kind: "error" },
+  chat: { open: false, user2Id: null },
+  message: { open: false, text: "", kind: "error", messages: [] },
   currentUser: null,
 };
 

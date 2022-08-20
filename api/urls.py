@@ -14,4 +14,5 @@ urlpatterns = [
     path('status_posts/', views.status_posts, name="status_posts"),
     path('profiles/search/', views.search_profiles, name="search_profiles"),
     path('profiles/<int:profile_id>/friendships/', views.profile_friendships, name="profile_friendships"),
+    path('users/<int:user_id>/', views.users, name="users"),
 ]

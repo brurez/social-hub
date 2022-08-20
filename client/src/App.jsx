@@ -24,6 +24,7 @@ import {UserInitializer} from "./UserInitializer";
 import MyAccountPage from "./components/MyAccountPage";
 import {CreatePostPage, EditPostPage, ShowPostPage} from "./components/PostPages.jsx";
 import ProfilePage from "./components/ProfilePage.jsx";
+import ChatDrawer from "./components/ChatDrawer";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ export default function App() {
             title="Social Hub App"
             description="Because we need even more social media networks in the world."
           />
+          <ChatDrawer/>
         </QueryClientProvider>
         <Message/>
       </StoreProvider>

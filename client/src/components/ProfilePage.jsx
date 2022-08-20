@@ -41,7 +41,6 @@ export default function ProfilePage() {
   }
 
   const _friendProfiles = isFriendProfilesLoading ? [] : friendProfiles;
-  console.log(profile)
   return (
     <FormSection>
       <Typography variant={"h4"} component={"h1"}

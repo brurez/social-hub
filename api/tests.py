@@ -76,6 +76,14 @@ class RestAPITestCase(APITestCase):
         self.assertEqual(self.user.last_name, result["data"]['last_name'])
         self.assertEqual(self.user.email, result["data"]['email'])
 
+    def test_get_user(self):
+        response = self.client.get('/api/users/' + str(self.user.id) + '/')
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        result = response.json()
+        self.assertEqual(self.user.first_name, result["data"]['first_name'])
+        self.assertEqual(self.user.last_name, result["data"]['last_name'])
+        self.assertEqual(self.user.email, result["data"]['email'])
+
     def test_get_profiles(self):
         self.client.force_login(self.user)
         response = self.client.get('/api/profiles/')

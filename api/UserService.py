@@ -1,6 +1,17 @@
 from api.models import User, Profile
 
+
 class UserService:
+
+    @staticmethod
+    def get_all_users():
+        users = User.objects.all()
+        return users
+
+    @staticmethod
+    def get_user_by_id(user_id):
+        user = User.objects.get(id=user_id)
+        return user
 
     @staticmethod
     def get_user_by_email(email):

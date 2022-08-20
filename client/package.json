@@ -14,6 +14,7 @@
     "@material-ui/core": "^4.12.4",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.2",
+    "@mui/styles": "^5.9.3",
     "axios": "^0.27.2",
     "axios-case-converter": "^0.9.0",
     "clsx": "^1.2.1",
@@ -27,6 +28,7 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.0",
+    "prettier": "^2.7.1",
     "vite": "^3.0.0"
   }
 }

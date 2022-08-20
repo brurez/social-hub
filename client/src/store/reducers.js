@@ -22,6 +22,12 @@ export const reducers = (
       return { ...state, currentUser: action.payload };
     case "CLEAR_CURRENT_USER":
       return { ...state, currentUser: null };
+
+    case "OPEN_CHAT":
+      return { ...state, chat: {open: true, user2Id: action.payload.user2Id} };
+    case "CLOSE_CHAT":
+      return { ...state, chat: {open: false, user2Id: null} };
+
     default:
       return state;
   }
