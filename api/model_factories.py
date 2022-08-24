@@ -19,7 +19,7 @@ class ProfileFactory(factory.django.DjangoModelFactory):
 
     biography = factory.Faker('text')
     location = factory.Faker('city')
-    profile_pic = factory.Faker('image_url')
+    profile_pic = None
     user = factory.SubFactory(UserFactory)
 
 

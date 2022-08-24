@@ -15,7 +15,7 @@ import { ProfileItem } from "./ProfileItem";
 import useMessage from "../hooks/useMessage.jsx";
 import Divider from "@mui/material/Divider";
 import { useGetProfileStatusPosts } from "../hooks/useGetProfileStatusPosts.js";
-import {PostItem} from "./PostItem.jsx";
+import { PostItem } from "./PostItem.jsx";
 
 export default function ProfilePage() {
   const params = useParams();
@@ -53,9 +53,31 @@ export default function ProfilePage() {
   const _friendProfiles = isFriendProfilesLoading ? [] : friendProfiles;
   return (
     <FormSection maxWidth={1200}>
-      <Typography variant={"h4"} component={"h1"} mb={4}>
-        {profile.user.firstName + " " + profile.user.lastName}
-      </Typography>
+      <Grid container>
+        <Grid item xs={12} md={10}>
+          <Typography variant={"h4"} component={"h1"} mb={4}>
+            {profile.user.firstName + " " + profile.user.lastName}
+          </Typography>
+        </Grid>
+        <Grid item>
+          {isCurrentUser(profile.user.id) ? (
+            <Button
+              variant={"outlined"}
+              onClick={() => navigate(`/my-account`)}
+            >
+              Edit
+            </Button>
+          ) : (
+            <Button
+              disabled={!isLoggedIn}
+              variant={"contained"}
+              onClick={handleFriendshipClick}
+            >
+              Add as friend
+            </Button>
+          )}
+        </Grid>
+      </Grid>
       <Grid container spacing={5}>
         <Grid item xs={12} md={4}>
           <img
@@ -106,19 +128,6 @@ export default function ProfilePage() {
       <Divider />
       <Stack mt={4} direction={"row"} spacing={2}>
         <Button onClick={() => navigate("/")}>Back to the home page</Button>
-        {isCurrentUser(profile.user.id) ? (
-          <Button variant={"outlined"} onClick={() => navigate(`/my-account`)}>
-            Edit
-          </Button>
-        ) : (
-          <Button
-            disabled={!isLoggedIn}
-            variant={"contained"}
-            onClick={handleFriendshipClick}
-          >
-            Add as friend
-          </Button>
-        )}
       </Stack>
     </FormSection>
   );

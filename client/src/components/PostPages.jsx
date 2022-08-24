@@ -42,7 +42,7 @@ export function DisplayPost({post}) {
   const {isCurrentUser} = useCurrentUser()
   const navigate = useNavigate()
   return (
-    <FormSection>
+    <FormSection maxWidth={1200}>
       <Typography variant={"h4"} component={"h1"} mb={4}>{post.title}</Typography>
       <Grid container spacing={5}>
         <Grid item xs={12} md={4}>

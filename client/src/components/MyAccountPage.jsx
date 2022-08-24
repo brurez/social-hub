@@ -12,12 +12,13 @@ import {useGetUserProfile} from "../hooks/useGetUserProfile.js";
 import {DEFAULT_PROFILE_PIC, SERVER_URL} from "../../env.js";
 import {useNavigate} from "react-router-dom";
 import FormSection from "./FormSection";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function MyAccountPage() {
   const {showErrorMessage, showSuccessMessage} = useMessage();
   const {currentUser, setCurrentUser} = useCurrentUser()
   const {data: profile, isLoading: isProfileLoading} = useGetUserProfile()
-  const {mutate: updateUserProfile} = useUpdateUserProfile({
+  const {mutate: updateUserProfile, isLoading: isProfileSaving} = useUpdateUserProfile({
     onSuccess: async () => {
       showSuccessMessage("You have successfully updated your profile!");
       const res = await Models.build().getCurrentUser();
@@ -110,13 +111,14 @@ export default function MyAccountPage() {
         >
           Cancel
         </Button>
-        <Button
+        <LoadingButton
           type="submit"
           variant="contained"
           sx={{width: "30%"}}
+          loading={isProfileSaving}
         >
           Save
-        </Button>
+        </LoadingButton>
         </Box>
       </Box>
     </FormSection>
