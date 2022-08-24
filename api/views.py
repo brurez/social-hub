@@ -231,3 +231,13 @@ def search_profiles(request):
         return ApiResponse(data=serializer.data)
     except Exception as e:
         return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+def profile_status_posts(request, profile_id):
+    try:
+        status_posts = StatusPostService.get_status_posts_by_profile_id(profile_id)
+        serializer = StatusPostSerializer(status_posts, many=True)
+        return ApiResponse(data=serializer.data)
+    except Exception as e:
+        return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)

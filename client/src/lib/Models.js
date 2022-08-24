@@ -43,6 +43,11 @@ export default class Models {
     return res.data;
   }
 
+  async getProfileStatusPosts(profileId) {
+    const res = await this.apiClient.getRequest(`profiles/${profileId}/status_posts`);
+    return res.data;
+  }
+
   async getStatusPost(id) {
     const res = await this.apiClient.getRequest(`status_posts/${id}`);
     return res.data;

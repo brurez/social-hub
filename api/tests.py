@@ -138,10 +138,19 @@ class RestAPITestCase(APITestCase):
         self.assertEqual(self.another_profile.user.last_name, result["data"][0]['user']['last_name'])
 
     def test_search_profiles(self):
-        self.client.force_login(self.user)
         response = self.client.get('/api/profiles/search/?q=' + self.user.first_name[0:3])
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         result = response.json()
         self.assertEqual(self.another_profile.id, result["data"][0]['id'])
         self.assertEqual(self.another_profile.user.first_name, result["data"][0]['user']['first_name'])
         self.assertEqual(self.another_profile.user.last_name, result["data"][0]['user']['last_name'])
+
+    def test_get_profile_status_posts(self):
+        response = self.client.get('/api/profiles/' + str(self.profile.id) + '/status_posts/')
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        result = response.json()
+        self.assertEqual(self.status_post.description, result["data"][0]['description'])
+        self.assertEqual(self.status_post.title, result["data"][0]['title'])
+        self.assertEqual(self.status_post.image.url, result["data"][0]['image'])
+        self.assertEqual(self.status_post.user.first_name, result["data"][0]['user']['first_name'])
+        self.assertEqual(self.status_post.user.last_name, result["data"][0]['user']['last_name'])

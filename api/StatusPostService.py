@@ -1,4 +1,4 @@
-from api.models import StatusPost
+from api.models import StatusPost, Profile
 
 
 class StatusPostService:
@@ -13,3 +13,8 @@ class StatusPostService:
     @staticmethod
     def create_status_post(data):
         return StatusPost.objects.create(**data)
+
+    @staticmethod
+    def get_status_posts_by_profile_id(profile_id):
+        profile = Profile.objects.get(id=profile_id)
+        return StatusPost.objects.filter(user_id = profile.user_id)
