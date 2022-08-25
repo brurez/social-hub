@@ -16,6 +16,7 @@ import useMessage from "../hooks/useMessage.jsx";
 import Divider from "@mui/material/Divider";
 import { useGetProfileStatusPosts } from "../hooks/useGetProfileStatusPosts.js";
 import { PostItem } from "./PostItem.jsx";
+import { StartChatButton } from "./StartChatButton";
 
 export default function ProfilePage() {
   const params = useParams();
@@ -53,9 +54,9 @@ export default function ProfilePage() {
   const _friendProfiles = isFriendProfilesLoading ? [] : friendProfiles;
   return (
     <FormSection maxWidth={1200}>
-      <Grid container>
+      <Grid container spacing={2}>
         <Grid item xs={12} md={10}>
-          <Typography variant={"h4"} component={"h1"} mb={4}>
+          <Typography variant={"h4"} component={"h1"}>
             {profile.user.firstName + " " + profile.user.lastName}
           </Typography>
         </Grid>
@@ -68,20 +69,24 @@ export default function ProfilePage() {
               Edit
             </Button>
           ) : (
-            <Button
-              disabled={!isLoggedIn}
-              variant={"contained"}
-              onClick={handleFriendshipClick}
-            >
-              Add as friend
-            </Button>
+            <>
+              <Button
+                disabled={!isLoggedIn}
+                variant={"contained"}
+                onClick={handleFriendshipClick}
+              >
+                Add as friend
+              </Button>
+              <StartChatButton user2Id={profile.user.id} size={"medium"} />
+            </>
           )}
         </Grid>
       </Grid>
       <Grid container spacing={5}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={4} sx={{ textAlign: "center" }}>
           <img
             width={"100%"}
+            style={{ maxWidth: 300 }}
             src={
               profile.profilePic
                 ? SERVER_URL + profile.profilePic

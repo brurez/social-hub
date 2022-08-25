@@ -120,7 +120,7 @@ function Message({ message, user1Id }) {
 export default function ChatDrawer() {
   const { currentUser } = useCurrentUser();
   const { isOpen, closeChatDrawer, user2Id } = useChatDrawer();
-  const { messages, sendMessage } = useChatMessages({
+  const { messages, sendMessage, user2 } = useChatMessages({
     user1Id: currentUser ? currentUser.id : null,
     user2Id,
   });
@@ -130,6 +130,13 @@ export default function ChatDrawer() {
     <Drawer anchor={"right"} open={isOpen} onClose={closeChatDrawer}>
       <div className={classes.container}>
         <Paper className={classes.paper} zDepth={2}>
+          <Typography variant="h6" component="h3" gutterBottom>
+            Chat with {user2 && user2.firstName} {user2 && user2.lastName}
+          </Typography>
+          <Typography variant="body2" component="p">
+            Open an anonymous browser window, sign in as{" "}
+            {user2 && user2.firstName} {user2 && user2.lastName}
+          </Typography>
           <Paper className={classes.messagesBody}>
             {messages.map((message) => (
               <Message

@@ -48,5 +48,5 @@ export default function useChatMessages({ user1Id = null, user2Id = null }) {
     }));
   }, [messages, user1, user2, isUser1Loading, isUser2Loading]);
 
-  return { messages: _messages, sendMessage };
+  return { messages: _messages, user2, sendMessage };
 }
