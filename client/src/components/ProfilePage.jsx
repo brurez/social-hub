@@ -115,7 +115,7 @@ export default function ProfilePage() {
               No friends so far...
             </Typography>
           ) : (
-            <Stack direction={"row"}>
+            <Stack direction={"column"}>
               {_friendProfiles.map((profile) => (
                 <ProfileItem profile={profile} key={profile.id} />
               ))}

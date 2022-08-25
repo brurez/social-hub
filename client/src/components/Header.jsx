@@ -31,7 +31,7 @@ function Header(props) {
 
   function handleSearchSelection(e, option) {
     setSearchValue("");
-    navigate(`/profiles/${option.id}`);
+    option && navigate(`/profiles/${option.id}`);
   }
 
   return (
@@ -61,6 +61,7 @@ function Header(props) {
             <SearchIcon />
           </IconButton>
           <Autocomplete
+            size={"small"}
             options={
               isProfilesLoading
                 ? []

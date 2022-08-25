@@ -43,7 +43,7 @@ export default function App() {
           <UserInitializer/>
           <Router>
             <Container maxWidth="lg">
-              <Header title="Social Hub"/>
+              <Header title="F1 Social Hub"/>
               <Routes>
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/signup" element={<SignUpPage/>}/>

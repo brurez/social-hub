@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 export function ProfileItem(props) {
   return (
     <>
-      <Grid container spacing={2} key={props.profile.id}>
+      <Grid container key={props.profile.id}>
         <Grid item xs={2} display={"flex"}>
           <RouterLink to={"/profiles/" + props.profile.id}>
             <img
@@ -20,14 +20,14 @@ export function ProfileItem(props) {
             />
           </RouterLink>
         </Grid>
-        <Grid item xs={4} display={"flex"} alignItems={"center"}>
+        <Grid item xs={5} display={"flex"} alignItems={"center"}>
           <RouterLink to={"/profiles/" + props.profile.id}>
             <Link variant={"body2"}>
               {props.profile.user.firstName} {props.profile.user.lastName}
             </Link>
           </RouterLink>
         </Grid>
-        <Grid item xs={6} display={"flex"} alignItems={"center"} justifyContent={"end"}>
+        <Grid item xs={5} display={"flex"} alignItems={"center"} justifyContent={"end"}>
            <StartChatButton user2Id={props.profile.user.id} />
         </Grid>
       </Grid>
