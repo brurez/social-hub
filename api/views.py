@@ -66,10 +66,8 @@ def get_current_user(request):
         serializer = UserSerializer(user)
         return ApiResponse(data={**serializer.data, "profile_id": profile.id})
     except ApiError as e:
-        print(e)
         return ApiResponse(error_message=str(e), status=e.status)
     except Exception as e:
-        print(e)
         return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -178,12 +176,13 @@ def status_posts(request, status_post_id=None):
         if request.method == 'GET':
             if status_post_id is not None:
                 one_status_post = StatusPostService.get_status_post(status_post_id)
-                status_post_serializer = StatusPostSerializer(one_status_post)
-                return ApiResponse(data=status_post_serializer.data)
+                serializer = StatusPostSerializer(one_status_post)
+                profile = Profile.objects.get(user=one_status_post.user)
+                return ApiResponse(data={**serializer.data, "profile_id": profile.id})
             else:
                 all_status_posts = StatusPostService.get_status_posts()
-                status_post_serializer = StatusPostSerializer(all_status_posts, many=True)
-                return ApiResponse(data=status_post_serializer.data)
+                serializer = StatusPostSerializer(all_status_posts, many=True)
+                return ApiResponse(data=serializer.data)
 
         if request.method == 'POST':
             title = request.data['title']

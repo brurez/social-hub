@@ -54,13 +54,13 @@ export default function ProfilePage() {
   const _friendProfiles = isFriendProfilesLoading ? [] : friendProfiles;
   return (
     <FormSection maxWidth={1200}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={10}>
+      <Grid container spacing={2} mb={2}>
+        <Grid item xs={12} md={6}>
           <Typography variant={"h4"} component={"h1"}>
             {profile.user.firstName + " " + profile.user.lastName}
           </Typography>
         </Grid>
-        <Grid item>
+        <Grid item textAlign={"right"} xs={12} md={6}>
           {isCurrentUser(profile.user.id) ? (
             <Button
               variant={"outlined"}

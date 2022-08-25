@@ -92,10 +92,10 @@ export default function AccountMenu() {
         anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
       >
         <MenuItem onClick={() => navigate("/profiles/" + currentUser.profileId)}>
-          <Avatar/> Profile
+          <Avatar/> My home
         </MenuItem>
         <MenuItem onClick={() => navigate("/my-account")}>
-          <Avatar/> My account
+          <Avatar/> Edit home
         </MenuItem>
         <Divider/>
         <MenuItem>

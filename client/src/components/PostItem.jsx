@@ -1,56 +1,36 @@
-import { useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { CardActions } from "@mui/material";
-import Button from "@mui/material/Button";
 import CardMedia from "@mui/material/CardMedia";
 import { SERVER_URL } from "../../env.js";
 import PropTypes from "prop-types";
 import * as React from "react";
-import Grid from "@mui/material/Grid";
+import { AppLink } from "./AppLink";
 
 export function PostItem(props) {
-  const navigate = useNavigate();
   return (
     <Card sx={{ display: "flex", mb: 1 }} variant={"outlined"}>
-      <Grid>
-        <CardContent>
+      <CardContent sx={{ width: "100%" }}>
+        <AppLink to={"/posts/" + props.post.id}>
           <Typography variant="h5" component={"h3"} gutterBottom>
             {props.post.title}
           </Typography>
-          <Typography variant="body2" gutterBottom>
-            {props.post.description.slice(0, 160)}
-            {props.post.description.length > 160 ? "..." : ""}
+        </AppLink>
+        <Typography variant="body2" gutterBottom>
+          {props.post.description.slice(0, 160)}
+          {props.post.description.length > 160 ? "..." : ""}
+        </Typography>
+        <Box display={"flex"} justifyContent={"space-between"} mt={2}>
+          <Typography variant="subtitle2" gutterBottom>
+            by {props.post.user.firstName} {props.post.user.lastName}
           </Typography>
-          <Box display={"flex"} justifyContent={"space-between"} mt={2}>
-            <Typography
-              variant="subtitle2"
-              color={"text.secondary"}
-              gutterBottom
-            >
-              by {props.post.user.firstName} {props.post.user.lastName}
-            </Typography>
-            <Typography
-              variant="subtitle2"
-              color={"text.secondary"}
-              gutterBottom
-            >
-              on {new Date(props.post.createdAt).toLocaleDateString()}
-            </Typography>
-          </Box>
-        </CardContent>
-        <CardActions disableSpacing>
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => navigate(`/posts/${props.post.id}`)}
-          >
-            Visit post page
-          </Button>
-        </CardActions>
-      </Grid>
+
+          <Typography variant="subtitle2" color={"text.secondary"} gutterBottom>
+            on {new Date(props.post.createdAt).toLocaleDateString()}
+          </Typography>
+        </Box>
+      </CardContent>
       <CardMedia
         component={"img"}
         image={
@@ -59,7 +39,7 @@ export function PostItem(props) {
             : "https://picsum.photos/200?blur=10?random=" + props.post.id
         }
         title={props.post.title}
-        sx={{ width: 160 }}
+        sx={{ width: 140 }}
       />
     </Card>
   );
