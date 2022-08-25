@@ -226,7 +226,7 @@ def profile_friendships(request, profile_id):
 def search_profiles(request):
     try:
         query = request.GET.get('q')
-        profiles = ProfileService.search_profiles_by_name(query)
+        profiles = ProfileService.search_profiles_by_name(query) if query else []
         serializer = ProfileSerializer(profiles, many=True)
         return ApiResponse(data=serializer.data)
     except Exception as e:
