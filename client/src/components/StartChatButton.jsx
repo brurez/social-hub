@@ -9,12 +9,11 @@ export function StartChatButton({ user2Id, size = "small" }) {
     <Button
       sx={{ ml: 4 }}
       size={size}
-      variant={"contained"}
-       color={"secondary"}
+      color={"secondary"}
       startIcon={<ChatBubble />}
       onClick={() => openChatDrawer(user2Id)}
     >
-      Start chat
+      {size === "small" ? "Chat" : "Start chat" }
     </Button>
   );
 }
