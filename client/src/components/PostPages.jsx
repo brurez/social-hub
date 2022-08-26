@@ -111,11 +111,16 @@ export function EditPost({ post = {}, title }) {
     event.preventDefault();
     const formData = new FormData(event.target);
     try {
-      await CoreApi.build().updateStatusPost(post.id, formData);
-      showSuccessMessage("Post updated successfully");
+      if (post.id) {
+        await CoreApi.build().updateStatusPost(post.id, formData);
+        showSuccessMessage("Post updated successfully");
+      } else {
+        await CoreApi.build().createStatusPost(formData);
+        showSuccessMessage("Post created successfully");
+      }
       navigate("/");
     } catch (error) {
-      showErrorMessage(error.message);
+      showErrorMessage(error.response.data.error.message);
     }
   };
 

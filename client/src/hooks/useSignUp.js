@@ -1,7 +1,7 @@
-import Auth from "../lib/Auth.js";
+import AuthApi from "../lib/AuthApi.js";
 import {useMutation} from "react-query";
 
-const auth = Auth.build()
+const auth = AuthApi.build()
 
 export function useSignUp(options) {
   return useMutation(auth.signUp.bind(auth), options)

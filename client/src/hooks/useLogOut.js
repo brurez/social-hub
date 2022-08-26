@@ -1,8 +1,8 @@
-import Auth from "../lib/Auth.js";
-import {useMutation} from "react-query";
+import AuthApi from "../lib/AuthApi.js";
+import { useMutation } from "react-query";
 
-const auth = Auth.build()
+const auth = AuthApi.build();
 
 export function useLogOut(options) {
-  return useMutation(auth.logOut.bind(auth), options)
+  return useMutation(auth.logOut.bind(auth), options);
 }

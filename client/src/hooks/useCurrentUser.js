@@ -1,6 +1,7 @@
 import {useContext} from "react";
 import {StoreContext} from "../store/StoreProvider.jsx";
 
+// React hook to handle the current user information
 export function useCurrentUser() {
   const [state, dispatch] = useContext(StoreContext)
 

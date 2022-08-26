@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { StoreContext } from "../store/StoreProvider.jsx";
 
+// React hook to handle the chat drawer
 export function useChatDrawer() {
   const [state, dispatch] = useContext(StoreContext);
 

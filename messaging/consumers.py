@@ -3,7 +3,7 @@ import time
 from channels.generic.websocket import AsyncWebsocketConsumer
 from messaging.ChatService import ChatService
 
-
+# Chat message consumer
 class ChatConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(args, kwargs)
@@ -14,12 +14,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.user1_id = int(self.scope['url_route']['kwargs']['user1_id'])
         self.user2_id = int(self.scope['url_route']['kwargs']['user2_id'])
 
+        # make sure the current user is allowed to see the messages
         if self.current_user.id != self.user1_id and self.current_user.id != self.user2_id:
             raise Exception("You are not authorized to send or receive messages")
 
+        # get the chat room or create it if it doesn't exist
         self.chat = await ChatService.initialize_chat(self.user1_id, self.user2_id)
 
+        # creates a unique identifier for the current connection to keep track of it
         key_list = [self.user1_id, self.user2_id]
+        # sort the list to make sure the order is always the same
         key_list.sort()
         room_key = '-'.join([str(key) for key in key_list])
         self.room_group_name = 'chat_' + room_key
@@ -42,6 +46,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         text = text_data_json['text']
         user_id = self.current_user.id
+        # add the message to the chat room before sending it to the group
         await ChatService.add_message(self.chat, user_id, text)
 
         await self.channel_layer.group_send(

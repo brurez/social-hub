@@ -107,8 +107,9 @@ export default function ChatDrawer() {
             Chat with {user2 && user2.firstName} {user2 && user2.lastName}
           </Typography>
           <Typography variant="body2" component="p">
-            Open an anonymous browser window, sign in as{" "}
-            {user2 && user2.firstName} {user2 && user2.lastName}
+            1. Open an anonymous browser window. <br/>
+            2. Sign in as {user2 && user2.firstName} {user2 && user2.lastName}. <br/>
+          3. Click to the chat button next {currentUser && currentUser.firstName} {currentUser && currentUser.lastName} name. <br/>
           </Typography>
           <Paper className={classes.messagesBody}>
             {currentUser

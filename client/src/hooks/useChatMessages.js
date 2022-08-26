@@ -3,6 +3,7 @@ import ChatSocket from "../lib/ChatSocket.js";
 import { useGetUser } from "./userGetUser.js";
 import MessagingApi from "../lib/MessagingApi.js";
 
+// React hook to handle chat messages
 export default function useChatMessages({
   user1Id = null,
   user2Id = null,
@@ -11,9 +12,11 @@ export default function useChatMessages({
   const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState(null);
 
+  // gets the user data
   const { data: user1, isLoading: isUser1Loading } = useGetUser(user1Id);
   const { data: user2, isLoading: isUser2Loading } = useGetUser(user2Id);
 
+  // gets all old messages of this chat room
   function fetchOldMessages() {
     MessagingApi.build()
       .getChat(user1Id, user2Id)
@@ -29,6 +32,7 @@ export default function useChatMessages({
       });
   }
 
+  // creates a new socket connection when the users are loaded
   useEffect(() => {
     if (user1Id && user2Id) {
       const _socket = new ChatSocket(user1Id, user2Id);
@@ -37,6 +41,7 @@ export default function useChatMessages({
     }
   }, [user1Id, user2Id]);
 
+  // listens to new messages when a socket is created
   useEffect(() => {
     if (socket) {
       const addMessage = (message) => {
@@ -49,7 +54,7 @@ export default function useChatMessages({
           },
         ]);
       };
-
+      // adds callback to get new messages
       socket.onMessageReceived(addMessage);
     }
   }, [socket, messages]);
@@ -58,8 +63,10 @@ export default function useChatMessages({
     socket.sendMessage(text);
   }
 
+  // memoizes the messages to avoid re-rendering
   const _messages = useMemo(() => {
     if (isUser1Loading || isUser2Loading) return [];
+    // callback to make the chat window scroll to the bottom
     setTimeout(onMessage, 500);
     return messages.map((message) => ({
       text: message.text,

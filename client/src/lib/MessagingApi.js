@@ -1,5 +1,6 @@
 import { buildApiClient } from "./buildApiClient.js";
 
+// Endpoints to access Messaging app
 export default class MessagingApi {
   static build() {
     const apiClient = buildApiClient("messaging");
@@ -10,6 +11,7 @@ export default class MessagingApi {
     this.apiClient = apiClient;
   }
 
+  // get a chat room with the two users
   async getChat(user1Id, user2Id) {
     const { data } = await this.apiClient.getRequest(
       `users/${user1Id}/chats/?user2_id=${user2Id}`,

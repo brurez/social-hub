@@ -1,10 +1,10 @@
-from asgiref.sync import sync_to_async
 from django.db import models
 
 # Create your models here.
 from api.models import User
 
 
+# This model and the Message model are used to store old chat messages
 class Chat(models.Model):
     users = models.ManyToManyField(User)
     created_at = models.DateTimeField(auto_now_add=True)

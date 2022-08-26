@@ -77,10 +77,13 @@ def users(request, user_id=None):
             password2 = request.data['password2']
 
             # Creates a new user
-            AuthService.sign_up(email, first_name, last_name, password, password2)
+            user, profile = AuthService.sign_up(email, first_name, last_name, password, password2)
             # Log in the user to get session cookie
             AuthService.sign_in(request, email, password)
-            return ApiResponse(status=status.HTTP_201_CREATED)
+            user_serializer = UserSerializer(user)
+            profile_serializer = ProfileSerializer(profile)
+            return ApiResponse(status=status.HTTP_201_CREATED,
+                               data={"user": user_serializer.data, "profile": profile_serializer.data})
 
         # Update user
         if request.method == 'PUT':
@@ -105,10 +108,8 @@ def users(request, user_id=None):
 
 
     except ApiError as e:
-        print(e)
         return ApiResponse(error_message=str(e), status=e.status)
     except Exception as e:
-        print(e)
         return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 

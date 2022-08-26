@@ -1,5 +1,6 @@
 import { buildApiClient } from "./buildApiClient.js";
 
+// Endpoints to access the API app
 export default class CoreApi {
   static build() {
     const apiClient = buildApiClient("api");
@@ -10,16 +11,19 @@ export default class CoreApi {
     this.apiClient = apiClient;
   }
 
+  // get current user logged in
   getCurrentUser() {
     return this.apiClient.getRequest("current_user");
   }
 
+  // get an user by id
   async getUser(userId) {
     if (!userId) return {};
     const res = await this.apiClient.getRequest(`users/${userId}`);
     return res.data;
   }
 
+  // updates current user profile
   updateUserProfile(data) {
     return this.apiClient.postRequest("user_profile", data, {
       headers: {
@@ -28,31 +32,37 @@ export default class CoreApi {
     });
   }
 
+  // get current user profile
   async getUserProfile(data) {
     const res = await this.apiClient.getRequest("user_profile", data);
     return res.data;
   }
 
+  // get all profiles
   async getProfiles() {
     const res = await this.apiClient.getRequest("profiles");
     return res.data;
   }
 
+  // gel all posts
   async getStatusPosts() {
     const res = await this.apiClient.getRequest("status_posts");
     return res.data;
   }
 
+  // get all posts of a profile
   async getProfileStatusPosts(profileId) {
     const res = await this.apiClient.getRequest(`profiles/${profileId}/status_posts`);
     return res.data;
   }
 
+  // get a specific post
   async getStatusPost(id) {
     const res = await this.apiClient.getRequest(`status_posts/${id}`);
     return res.data;
   }
 
+  // create a new status post
   async createStatusPost(data) {
     const res = await this.apiClient.postRequest("status_posts", data, {
       headers: {
@@ -62,6 +72,7 @@ export default class CoreApi {
     return res.data;
   }
 
+  // updates an existing status post
   async updateStatusPost(postId, data) {
     const res = await this.apiClient.putRequest( `status_posts/${postId}`, data, {
       headers: {

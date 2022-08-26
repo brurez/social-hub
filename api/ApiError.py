@@ -1,4 +1,5 @@
 
+# An error class with attributes expected by the frontend
 class ApiError(Exception):
     def __init__(self, message, status):
         self.message = message

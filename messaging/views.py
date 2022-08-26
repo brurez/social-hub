@@ -6,7 +6,7 @@ from messaging.ChatService import ChatService
 from messaging.MessagingResponse import MessagingResponse
 from messaging.serializers import ChatSerializer
 
-
+# return a chat room with the two users
 @api_view(['GET'])
 def chats(request, user1_id):
     try:

@@ -1,5 +1,6 @@
 import {SERVER_DOMAIN} from "../../env.js";
 
+// Websocket client for the chat application
 export default class ChatSocket {
   constructor(user1Id, user2Id) {
     this.connect(user1Id, user2Id);

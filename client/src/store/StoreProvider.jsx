@@ -12,9 +12,9 @@ const initialState = {
 export const StoreContext = createContext([initialState]);
 
 export const StoreProvider = ({ children }) => {
+  // Initialize the Store with the initial state
   const [state, dispatch] = useReducer(reducers, initialState);
   return (
-    // @ts-ignore
     <StoreContext.Provider value={[state, dispatch]}>
       {children}
     </StoreContext.Provider>

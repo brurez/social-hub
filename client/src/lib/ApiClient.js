@@ -1,5 +1,6 @@
 const serverUrl = "http://localhost:8000";
 
+// Http request methods
 export default class ApiClient {
   constructor(client, basePath) {
     this.httpClient = client;
