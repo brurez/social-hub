@@ -9,6 +9,7 @@ import { Send } from "@mui/icons-material";
 import Typography from "@mui/material/Typography";
 import { useCurrentUser } from "../hooks/useCurrentUser.js";
 import useChatMessages from "../hooks/useChatMessages.js";
+import { useRef } from "react";
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -50,6 +51,7 @@ function ChatInput({ onSend }) {
     e.preventDefault();
     const text = e.target.elements.message.value;
     onSend(text);
+    e.target.elements.message.value = "";
   };
   return (
     <>
@@ -86,7 +88,7 @@ function MessageBody({ message }) {
           {message.user.firstName} {message.user.lastName}
         </Typography>
         <Typography variant="body2" gutterBottom>
-          {new Date(message.createdAt * 1000).toLocaleTimeString()}
+          {new Date(message.createdAt * 1000).toLocaleString()}
         </Typography>
       </Box>
     </>
@@ -118,12 +120,18 @@ function Message({ message, user1Id }) {
 }
 
 export default function ChatDrawer() {
+  const messageBottom = useRef(null);
   const { currentUser } = useCurrentUser();
   const { isOpen, closeChatDrawer, user2Id } = useChatDrawer();
   const { messages, sendMessage, user2 } = useChatMessages({
     user1Id: currentUser ? currentUser.id : null,
     user2Id,
+    onMessage: messageBottom.current?.scrollIntoView({
+      behavior: "smooth",
+      inline: "end",
+    }),
   });
+
   const classes = useStyles();
 
   return (
@@ -138,13 +146,16 @@ export default function ChatDrawer() {
             {user2 && user2.firstName} {user2 && user2.lastName}
           </Typography>
           <Paper className={classes.messagesBody}>
-            {messages.map((message) => (
-              <Message
-                message={message}
-                user1Id={currentUser.id}
-                key={message.createdAt}
-              />
-            ))}
+            {currentUser
+              ? messages.map((message) => (
+                  <Message
+                    message={message}
+                    user1Id={currentUser.id}
+                    key={message.createdAt}
+                  />
+                ))
+              : []}
+            <div ref={messageBottom} style={{ height: 1 }} />
           </Paper>
           <ChatInput onSend={(text) => sendMessage(text)} />
         </Paper>

@@ -1,12 +1,13 @@
 const serverUrl = 'http://localhost:8000';
 
 export default class ApiClient {
-  constructor(client) {
+  constructor(client, basePath) {
     this.httpClient = client;
+    this.basePath = basePath;
   }
 
   async getRequest(path, { trailSlash = true } = {}) {
-    const {data} = await this.httpClient.get(`${serverUrl}/api/${path}${trailSlash ? '/' : ''}`, {
+    const {data} = await this.httpClient.get(`${serverUrl}/${this.basePath}/${path}${trailSlash ? '/' : ''}`, {
       headers: {
         "Content-Type": "application/json",
         "x-csrftoken": this.#getCookie("csrftoken"),
@@ -16,7 +17,7 @@ export default class ApiClient {
   }
 
   async postRequest(path, params, options = {headers: {}}) {
-    const {data} = await this.httpClient.post(`${serverUrl}/api/${path}/`, params, {
+    const {data} = await this.httpClient.post(`${serverUrl}/${this.basePath}/${path}/`, params, {
       headers: {
         "Content-Type": "application/json",
         "x-csrftoken": this.#getCookie("csrftoken"),

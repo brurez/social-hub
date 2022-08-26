@@ -3,7 +3,7 @@ import {buildApiClient} from "./buildApiClient.js";
 
 export default class Auth {
   static build() {
-    const apiClient = buildApiClient()
+    const apiClient = buildApiClient("api")
     return new Auth(apiClient);
   }
 

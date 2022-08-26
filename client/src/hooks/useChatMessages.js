@@ -1,18 +1,41 @@
 import { useEffect, useMemo, useState } from "react";
 import ChatSocket from "../lib/ChatSocket.js";
 import { useGetUser } from "./userGetUser.js";
+import MessagingApi from "../lib/MessagingApi.js";
 
-export default function useChatMessages({ user1Id = null, user2Id = null }) {
+export default function useChatMessages({
+  user1Id = null,
+  user2Id = null,
+  onMessage = () => {},
+}) {
   const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState(null);
 
   const { data: user1, isLoading: isUser1Loading } = useGetUser(user1Id);
   const { data: user2, isLoading: isUser2Loading } = useGetUser(user2Id);
 
+  console.log(user1Id, user2Id, messages);
+
+  function fetchOldMessages() {
+    MessagingApi.build()
+      .getChat(user1Id, user2Id)
+      .then((chat) => {
+        const _messages = chat.messages.map((message) => {
+          return {
+            text: message.text,
+            userId: message.user.id,
+            createdAt: new Date(message.createdAt).getTime() / 1000,
+          };
+        });
+        setMessages(_messages);
+      });
+  }
+
   useEffect(() => {
     if (user1Id && user2Id) {
       const _socket = new ChatSocket(user1Id, user2Id);
       setSocket(_socket);
+      fetchOldMessages();
     }
   }, [user1Id, user2Id]);
 
@@ -27,7 +50,7 @@ export default function useChatMessages({ user1Id = null, user2Id = null }) {
             createdAt: message.created_at,
           },
         ]);
-      }
+      };
 
       socket.onMessageReceived(addMessage);
     }
@@ -39,9 +62,8 @@ export default function useChatMessages({ user1Id = null, user2Id = null }) {
 
   const _messages = useMemo(() => {
     if (isUser1Loading || isUser2Loading) return [];
-    const ms = [...messages]
-    ms.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1));
-    return ms.map((message) => ({
+    setTimeout(onMessage, 500);
+    return messages.map((message) => ({
       text: message.text,
       user: message.userId === user1Id ? user1 : user2,
       createdAt: message.createdAt,

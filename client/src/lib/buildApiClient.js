@@ -1,12 +1,11 @@
 import ApiClient from "./ApiClient.js";
 import axios from "axios";
-import Cookies from "universal-cookie";
 import applyCaseMiddleware from 'axios-case-converter';
 
-export function buildApiClient() {
+export function buildApiClient(basePath) {
   const client = axios.create({
     withCredentials: true,
     credentials: 'include',
   })
-  return new ApiClient(applyCaseMiddleware(client));
+  return new ApiClient(applyCaseMiddleware(client), basePath);
 }

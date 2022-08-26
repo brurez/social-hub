@@ -2,7 +2,7 @@ import { buildApiClient } from "./buildApiClient.js";
 
 export default class Models {
   static build() {
-    const apiClient = buildApiClient();
+    const apiClient = buildApiClient("api");
     return new Models(apiClient);
   }
 

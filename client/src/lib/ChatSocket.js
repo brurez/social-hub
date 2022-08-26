@@ -2,12 +2,16 @@ import {SERVER_DOMAIN} from "../../env.js";
 
 export default class ChatSocket {
   constructor(user1Id, user2Id) {
+    this.connect(user1Id, user2Id);
+    this.onMessageReceivedCallback = () => {};
+  }
+
+  connect(user1Id, user2Id) {
     this.socket = new WebSocket(`ws://${SERVER_DOMAIN}/ws/chat/${user1Id}/${user2Id}/`);
     this.socket.onopen = this.#onSocketOpen.bind(this);
     this.socket.onmessage = this.#onSocketMessage.bind(this);
     this.socket.onerror = this.#onSocketError.bind(this);
     this.socket.onclose = this.#onSocketClose.bind(this);
-    this.onMessageReceivedCallback = () => {};
   }
 
   sendMessage(text) {
