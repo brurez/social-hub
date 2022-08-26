@@ -54,3 +54,8 @@ class UserService:
     def get_profile(profile_id):
         profile = Profile.objects.get(id=profile_id)
         return profile
+
+    @staticmethod
+    def delete_user(user_id):
+        user = User.objects.get(id=user_id)
+        user.delete()

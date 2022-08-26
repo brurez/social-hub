@@ -10,7 +10,7 @@ import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 import SignUpPage from "./components/SignUpPage.jsx";
 import {BrowserRouter as Router, Route, Link, Routes} from "react-router-dom";
-import HomePage from "./components/HomePage.jsx";
+import MainPage from "./components/MainPage.jsx";
 import {
   useQuery,
   useQueryClient,
@@ -21,9 +21,9 @@ import {StoreProvider} from "./store/StoreProvider";
 import Message from "./components/Message.jsx";
 import SignInPage from "./components/SignInPage.jsx";
 import {UserInitializer} from "./UserInitializer";
-import MyAccountPage from "./components/MyAccountPage";
+import EditProfileHomePage from "./components/EditProfileHomePage.jsx";
 import {CreatePostPage, EditPostPage, ShowPostPage} from "./components/PostPages.jsx";
-import ProfilePage from "./components/ProfilePage.jsx";
+import ProfileHomePage from "./components/ProfileHomePage.jsx";
 import ChatDrawer from "./components/ChatDrawer";
 
 const queryClient = new QueryClient();
@@ -45,14 +45,14 @@ export default function App() {
             <Container maxWidth="lg">
               <Header title="F1 Social Hub"/>
               <Routes>
-                <Route path="/" element={<HomePage/>}/>
+                <Route path="/" element={<MainPage/>}/>
                 <Route path="/signup" element={<SignUpPage/>}/>
                 <Route path="/signin" element={<SignInPage/>}/>
-                <Route path="/my-account" element={<MyAccountPage/>}/>
+                <Route path="/edit-profile" element={<EditProfileHomePage/>}/>
                 <Route path="/posts/create" element={<CreatePostPage/>}/>
                 <Route path="/posts/:postId/edit" element={<EditPostPage/>}/>
                 <Route path="/posts/:postId" element={<ShowPostPage/>}/>
-                <Route path="/profiles/:profileId" element={<ProfilePage/>}/>
+                <Route path="/profiles/:profileId" element={<ProfileHomePage/>}/>
               </Routes>
             </Container>
           </Router>

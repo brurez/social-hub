@@ -1,9 +1,9 @@
 import { buildApiClient } from "./buildApiClient.js";
 
-export default class Models {
+export default class CoreApi {
   static build() {
     const apiClient = buildApiClient("api");
-    return new Models(apiClient);
+    return new CoreApi(apiClient);
   }
 
   constructor(apiClient) {
@@ -55,6 +55,15 @@ export default class Models {
 
   async createStatusPost(data) {
     const res = await this.apiClient.postRequest("status_posts", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return res.data;
+  }
+
+  async updateStatusPost(postId, data) {
+    const res = await this.apiClient.putRequest( `status_posts/${postId}`, data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

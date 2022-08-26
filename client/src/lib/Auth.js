@@ -12,7 +12,7 @@ export default class Auth {
   }
 
   signUp(data) {
-    return this.apiClient.postRequest('signup', data);
+    return this.apiClient.postRequest('users', data);
   }
 
   signIn(data) {

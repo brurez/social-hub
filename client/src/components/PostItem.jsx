@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import * as React from "react";
 import { AppLink } from "./AppLink";
 
+// Component that show a compact information of a single user/profile
 export function PostItem(props) {
   return (
     <Card sx={{ display: "flex", mb: 1 }} variant={"outlined"}>

@@ -1,7 +1,7 @@
 import {useQuery} from 'react-query';
-import Models from "../lib/Models.js";
+import CoreApi from "../lib/CoreApi.js";
 
-const models = Models.build()
+const models = CoreApi.build()
 
 export function useGetProfiles() {
   return useQuery(["getProfiles"], models.getProfiles.bind(models));

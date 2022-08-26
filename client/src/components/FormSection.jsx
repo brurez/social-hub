@@ -1,6 +1,6 @@
-import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 
+// Component to render a layout box used throughout the app
 export default function FormSection({ maxWidth, children }) {
   return (
     <Paper

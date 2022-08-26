@@ -19,22 +19,6 @@ def index(request):
 
 
 @api_view(['POST'])
-def signup(request):
-    email = request.data['email']
-    first_name = request.data['first_name']
-    last_name = request.data['last_name']
-    password = request.data['password']
-    password2 = request.data['password2']
-
-    try:
-        AuthService.sign_up(email, first_name, last_name, password, password2)
-        AuthService.sign_in(request, email, password)
-        return ApiResponse(status=status.HTTP_201_CREATED)
-    except Exception as e:
-        return ApiResponse(error_message=str(e), status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
 def signin(request):
     email = request.data['email']
     password = request.data['password']
@@ -72,7 +56,7 @@ def get_current_user(request):
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
-def users(request, user_id):
+def users(request, user_id=None):
     try:
         if request.method == 'GET':
             if user_id is None:
@@ -84,6 +68,7 @@ def users(request, user_id):
                 serializer = UserSerializer(user)
                 return ApiResponse(data=serializer.data)
 
+        # New user sign up
         if request.method == 'POST':
             email = request.data['email']
             first_name = request.data['first_name']
@@ -91,10 +76,13 @@ def users(request, user_id):
             password = request.data['password']
             password2 = request.data['password2']
 
+            # Creates a new user
             AuthService.sign_up(email, first_name, last_name, password, password2)
+            # Log in the user to get session cookie
             AuthService.sign_in(request, email, password)
             return ApiResponse(status=status.HTTP_201_CREATED)
 
+        # Update user
         if request.method == 'PUT':
             first_name = request.data['first_name']
             last_name = request.data['last_name']
@@ -110,6 +98,11 @@ def users(request, user_id):
             user = UserService.get_user_by_email(email)
             user_serializer = UserSerializer(user)
             return ApiResponse(data=user_serializer.data)
+
+        # Delete user
+        if request.method == 'DELETE':
+            UserService.delete_user(user_id)
+
 
     except ApiError as e:
         print(e)
@@ -170,7 +163,7 @@ def profiles(request, profile_id=None):
         return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT'])
 def status_posts(request, status_post_id=None):
     try:
         if request.method == 'GET':
@@ -191,6 +184,16 @@ def status_posts(request, status_post_id=None):
             user = request.user
             StatusPostService.create_status_post(
                 {"title": title, "description": description, "image": image, "user": user})
+            return ApiResponse()
+
+        if request.method == 'PUT':
+            title = request.data['title']
+            description = request.data['description']
+            image = request.data.get('image')
+            user = request.user
+            StatusPostService.update_status_post(status_post_id,
+                                                 {"title": title, "description": description, "image": image,
+                                                  "user": user})
             return ApiResponse()
     except Exception as e:
         return ApiResponse(error_message=str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)

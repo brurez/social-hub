@@ -1,14 +1,10 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Autocomplete, ButtonGroup } from "@mui/material";
-import Box from "@mui/material/Box";
 import AccountMenu from "./AccountMenu.jsx";
 import VisitorMenu from "./VisitorMenu.jsx";
 import { useCurrentUser } from "../hooks/useCurrentUser.js";
@@ -16,19 +12,23 @@ import TextField from "@mui/material/TextField";
 import { useGetProfilesSearch } from "../hooks/useGetProfileSearch.js";
 import Stack from "@mui/material/Stack";
 
+// Header component for the app
 function Header(props) {
   const { title } = props;
   const { isLoggedIn } = useCurrentUser();
   const [searchValue, setSearchValue] = React.useState("");
+  // Hook to get the profiles matching the search value
   const { data: profiles, isLoading: isProfilesLoading } = useGetProfilesSearch(
     { query: searchValue }
   );
   const navigate = useNavigate();
 
+  // Handle search input change
   function handleSearchInputChange({ target: { value } }) {
     setSearchValue(value);
   }
 
+  // Handle search selection click
   function handleSearchSelection(e, option) {
     setSearchValue("");
     option && navigate(`/profiles/${option.id}`);

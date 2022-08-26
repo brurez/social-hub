@@ -14,8 +14,6 @@ export default function useChatMessages({
   const { data: user1, isLoading: isUser1Loading } = useGetUser(user1Id);
   const { data: user2, isLoading: isUser2Loading } = useGetUser(user2Id);
 
-  console.log(user1Id, user2Id, messages);
-
   function fetchOldMessages() {
     MessagingApi.build()
       .getChat(user1Id, user2Id)

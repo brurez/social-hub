@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import { useCurrentUser } from "../hooks/useCurrentUser.js";
-import Models from "../lib/Models.js";
+import CoreApi from "../lib/CoreApi.js";
 import { useGetProfileFriends } from "../hooks/useGetProfileFriends.js";
 import Stack from "@mui/material/Stack";
 import { ProfileItem } from "./ProfileItem";
@@ -18,14 +18,18 @@ import { useGetProfileStatusPosts } from "../hooks/useGetProfileStatusPosts.js";
 import { PostItem } from "./PostItem.jsx";
 import { StartChatButton } from "./StartChatButton";
 
-export default function ProfilePage() {
+// Page for viewing a profile
+export default function ProfileHomePage() {
   const params = useParams();
+  // Hook for getting the profile
   const { data: profile, isLoading: isProfileLoading } = useGetProfile(
     params.profileId
   );
+  // Hook for getting the profile's posts
   const { data: posts, isLoading: isPostsLoading } = useGetProfileStatusPosts(
     params.profileId
   );
+  // Hook for getting the profile's friends
   const {
     data: friendProfiles,
     isLoading: isFriendProfilesLoading,
@@ -39,9 +43,10 @@ export default function ProfilePage() {
     return <Typography>Loading...</Typography>;
   }
 
+  // calls api to create a friendship when the user clicks the button
   const handleFriendshipClick = async () => {
     try {
-      await Models.build().createFriendship(currentUser.profileId, profile.id);
+      await CoreApi.build().createFriendship(currentUser.profileId, profile.id);
       refetchProfileFriends();
       showSuccessMessage(
         "You've added " + profile.user.firstName + " as a friend!"
@@ -64,7 +69,7 @@ export default function ProfilePage() {
           {isCurrentUser(profile.user.id) ? (
             <Button
               variant={"outlined"}
-              onClick={() => navigate(`/my-account`)}
+              onClick={() => navigate(`/edit-profile`)}
             >
               Edit
             </Button>

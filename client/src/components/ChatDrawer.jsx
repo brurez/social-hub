@@ -10,7 +10,9 @@ import Typography from "@mui/material/Typography";
 import { useCurrentUser } from "../hooks/useCurrentUser.js";
 import useChatMessages from "../hooks/useChatMessages.js";
 import { useRef } from "react";
+import { Message } from "./ChatMessage.jsx";
 
+// styles for the chat drawer
 const useStyles = makeStyles((theme) =>
   createStyles({
     paper: {
@@ -46,7 +48,9 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
+// Component that renders the message input at the bottom of the chat drawer
 function ChatInput({ onSend }) {
+  // handles message input submit
   const handleSubmit = (e) => {
     e.preventDefault();
     const text = e.target.elements.message.value;
@@ -62,6 +66,7 @@ function ChatInput({ onSend }) {
         display={"flex"}
         width={"100%"}
         px={1}
+        mb={1}
       >
         <TextField label="Write here your message" name="message" fullWidth />
         <Button
@@ -77,48 +82,7 @@ function ChatInput({ onSend }) {
   );
 }
 
-function MessageBody({ message }) {
-  return (
-    <>
-      <Typography variant="body1" gutterBottom>
-        {message.text}
-      </Typography>
-      <Box display={"flex"} justifyContent={"space-between"}>
-        <Typography variant="body2" gutterBottom>
-          {message.user.firstName} {message.user.lastName}
-        </Typography>
-        <Typography variant="body2" gutterBottom>
-          {new Date(message.createdAt * 1000).toLocaleString()}
-        </Typography>
-      </Box>
-    </>
-  );
-}
-
-function User1Message({ message }) {
-  return (
-    <Box p={1} bgcolor="success.main" m={1} mr={6} borderRadius={2}>
-      <MessageBody message={message} />
-    </Box>
-  );
-}
-
-function User2Message({ message }) {
-  return (
-    <Box p={1} bgcolor="warning.main" m={1} ml={6} borderRadius={2}>
-      <MessageBody message={message} />
-    </Box>
-  );
-}
-
-function Message({ message, user1Id }) {
-  return message.user.id === user1Id ? (
-    <User1Message message={message} />
-  ) : (
-    <User2Message message={message} />
-  );
-}
-
+// Component that renders the chat drawer. It contains the messages and the message input.
 export default function ChatDrawer() {
   const messageBottom = useRef(null);
   const { currentUser } = useCurrentUser();
@@ -126,6 +90,7 @@ export default function ChatDrawer() {
   const { messages, sendMessage, user2 } = useChatMessages({
     user1Id: currentUser ? currentUser.id : null,
     user2Id,
+    // scrolls the message window to the bottom when a new message is received
     onMessage: messageBottom.current?.scrollIntoView({
       behavior: "smooth",
       inline: "end",

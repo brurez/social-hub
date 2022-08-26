@@ -4,47 +4,54 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import * as React from "react";
-import {useCurrentUser} from "../hooks/useCurrentUser.js";
-import {useUpdateUserProfile} from "../hooks/useUpdateUserProfile.js";
+import { useCurrentUser } from "../hooks/useCurrentUser.js";
+import { useUpdateUserProfile } from "../hooks/useUpdateUserProfile.js";
 import useMessage from "../hooks/useMessage.jsx";
-import Models from "../lib/Models.js";
-import {useGetUserProfile} from "../hooks/useGetUserProfile.js";
-import {DEFAULT_PROFILE_PIC, SERVER_URL} from "../../env.js";
-import {useNavigate} from "react-router-dom";
+import CoreApi from "../lib/CoreApi.js";
+import { useGetUserProfile } from "../hooks/useGetUserProfile.js";
+import { DEFAULT_PROFILE_PIC, SERVER_URL } from "../../env.js";
+import { useNavigate } from "react-router-dom";
 import FormSection from "./FormSection";
 import LoadingButton from "@mui/lab/LoadingButton";
 
-export default function MyAccountPage() {
-  const {showErrorMessage, showSuccessMessage} = useMessage();
-  const {currentUser, setCurrentUser} = useCurrentUser()
-  const {data: profile, isLoading: isProfileLoading} = useGetUserProfile()
-  const {mutate: updateUserProfile, isLoading: isProfileSaving} = useUpdateUserProfile({
-    onSuccess: async () => {
-      showSuccessMessage("You have successfully updated your profile!");
-      const res = await Models.build().getCurrentUser();
-      setCurrentUser(res.data);
-    },
-    onError: ({response}) => {
-      showErrorMessage(response.data.error.message)
-    }
-  })
+// Page for editing the profile and change user's home page
+export default function EditProfileHomePage() {
+  const { showErrorMessage, showSuccessMessage } = useMessage();
+  const { currentUser, setCurrentUser } = useCurrentUser();
+  const { data: profile, isLoading: isProfileLoading } = useGetUserProfile();
+  const { mutate: updateUserProfile, isLoading: isProfileSaving } =
+    useUpdateUserProfile({
+      // callback executed after successful profile update
+      onSuccess: async () => {
+        showSuccessMessage("You have successfully updated your profile!");
+        const res = await CoreApi.build().getCurrentUser();
+        setCurrentUser(res.data);
+        navigate("/");
+      },
+      // callback executed after failed profile update
+      onError: ({ response }) => {
+        showErrorMessage(response.data.error.message);
+      },
+    });
 
   const navigate = useNavigate();
 
+  // handle profile save
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     updateUserProfile(formData);
-  }
+  };
 
-  if (!currentUser) return <div>Loading...</div>
+  // show loading spinner while current user is loading
+  if (!currentUser) return <div>Loading...</div>;
 
   return (
     <FormSection>
       <Typography component="h1" variant="h5">
-        My Account ({currentUser.email})
+        Edit Home ({currentUser.email})
       </Typography>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -72,11 +79,17 @@ export default function MyAccountPage() {
           {!isProfileLoading && (
             <>
               <Grid item xs={12} ml={1}>
-                <Typography variant="caption" color={"text.secondary"} mr={2}>Profile picture</Typography>
+                <Typography variant="caption" color={"text.secondary"} mr={2}>
+                  Profile picture
+                </Typography>
                 <input type={"file"} name={"profilePic"} id={"profilePic"} />
               </Grid>
               <Grid item xs={12} ml={1}>
-                <img height={200} src={(SERVER_URL + profile.profilePic) || DEFAULT_PROFILE_PIC} alt={"profile pic"} />
+                <img
+                  height={200}
+                  src={SERVER_URL + profile.profilePic || DEFAULT_PROFILE_PIC}
+                  alt={"profile pic"}
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -100,25 +113,24 @@ export default function MyAccountPage() {
                 />
               </Grid>
             </>
-
           )}
         </Grid>
         <Box mt={3} display={"flex"} justifyContent={"space-around"}>
-        <Button
-          onClick={() => navigate("/")}
-          variant="outlined"
-          sx={{width: "30%"}}
-        >
-          Cancel
-        </Button>
-        <LoadingButton
-          type="submit"
-          variant="contained"
-          sx={{width: "30%"}}
-          loading={isProfileSaving}
-        >
-          Save
-        </LoadingButton>
+          <Button
+            onClick={() => navigate("/")}
+            variant="outlined"
+            sx={{ width: "30%" }}
+          >
+            Cancel
+          </Button>
+          <LoadingButton
+            type="submit"
+            variant="contained"
+            sx={{ width: "30%" }}
+            loading={isProfileSaving}
+          >
+            Save
+          </LoadingButton>
         </Box>
       </Box>
     </FormSection>

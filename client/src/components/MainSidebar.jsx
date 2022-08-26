@@ -7,7 +7,7 @@ import {useGetProfiles} from "../hooks/useGetProfiles.js";
 import {useCurrentUser} from "../hooks/useCurrentUser.js";
 import {ProfileItem} from "./ProfileItem.jsx";
 
-function HomeSidebar(props) {
+function MainSidebar(props) {
   const {data: profiles, isLoading: isProfilesLoading} = useGetProfiles()
   const {currentUser} = useCurrentUser()
 
@@ -31,4 +31,4 @@ function HomeSidebar(props) {
   );
 }
 
-export default HomeSidebar;
+export default MainSidebar;

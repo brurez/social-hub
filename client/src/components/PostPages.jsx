@@ -6,12 +6,12 @@ import { DEFAULT_PROFILE_PIC, SERVER_URL } from "../../env.js";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import { useGetStatusPost } from "../hooks/useGetStatusPost.js";
-import Models from "../lib/Models.js";
+import CoreApi from "../lib/CoreApi.js";
 import { useNavigate, useParams } from "react-router-dom";
 import FormSection from "./FormSection";
-import Divider from "@mui/material/Divider";
 import { useCurrentUser } from "../hooks/useCurrentUser.js";
 import { AppLink } from "./AppLink";
+import useMessage from "../hooks/useMessage.jsx";
 
 export const EditPostContainer = ({ postId, title }) => {
   const { data: post, isLoading: isPostLoading } = useGetStatusPost(postId);
@@ -19,22 +19,28 @@ export const EditPostContainer = ({ postId, title }) => {
   return <EditPost post={post} title={title} />;
 };
 
-export const ShowPostContainer = ({ postId, title }) => {
+export const ShowPostContainer = ({ postId }) => {
   const { data: post, isLoading: isPostLoading } = useGetStatusPost(postId);
   if (isPostLoading) return <div>Loading...</div>;
   return <DisplayPost post={post} />;
 };
 
+// Page for creating a new post
 export const CreatePostPage = () => <EditPost title={"Create a new post"} />;
+
+// Page for editing a post
 export const EditPostPage = () => {
   const params = useParams();
   return <EditPostContainer postId={params.postId} title={"Edit your post"} />;
 };
+
+// Page for viewing a post
 export const ShowPostPage = () => {
   const params = useParams();
   return <ShowPostContainer postId={params.postId} />;
 };
 
+// Component to show a post
 export function DisplayPost({ post }) {
   const { isCurrentUser } = useCurrentUser();
   const navigate = useNavigate();
@@ -96,14 +102,21 @@ export function DisplayPost({ post }) {
   );
 }
 
+// Component to show a form to edit a post
 export function EditPost({ post = {}, title }) {
   const navigate = useNavigate();
+  const { showErrorMessage, showSuccessMessage } = useMessage()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    await Models.build().createStatusPost(formData);
-    navigate("/");
+    try {
+      await CoreApi.build().updateStatusPost(post.id, formData);
+      showSuccessMessage("Post updated successfully");
+      navigate("/");
+    } catch (error) {
+      showErrorMessage(error.message);
+    }
   };
 
   return (
@@ -142,7 +155,7 @@ export function EditPost({ post = {}, title }) {
               type={"file"}
               name={"image"}
               id={"image"}
-              defaultValue={post.image}
+              defaultValue={post.image && post.image.url}
             />
           </Grid>
           <Grid item xs={12} ml={1}>
@@ -150,7 +163,7 @@ export function EditPost({ post = {}, title }) {
               <img
                 height={200}
                 src={SERVER_URL + post.image || DEFAULT_PROFILE_PIC}
-                alt={"profile pic"}
+                alt={"post image"}
               />
             ) : (
               "No image"

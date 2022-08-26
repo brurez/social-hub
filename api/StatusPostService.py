@@ -17,4 +17,13 @@ class StatusPostService:
     @staticmethod
     def get_status_posts_by_profile_id(profile_id):
         profile = Profile.objects.get(id=profile_id)
-        return StatusPost.objects.filter(user_id = profile.user_id)
+        return StatusPost.objects.filter(user_id=profile.user_id)
+
+    @staticmethod
+    def update_status_post(post_id, data):
+        status_post = StatusPost.objects.get(id=post_id)
+        status_post.title = data['title']
+        status_post.description = data['description']
+        status_post.image = data['image']
+        status_post.save()
+        return status_post

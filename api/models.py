@@ -18,6 +18,10 @@ class Profile(models.Model):
 
     def save(self, *args, **kwargs):
         super().save()
+
+        if not self.profile_pic:
+            return
+
         img = Image.open(self.profile_pic.path)
         width, height = img.size  # Get dimensions
 

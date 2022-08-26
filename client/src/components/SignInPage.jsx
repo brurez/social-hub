@@ -15,7 +15,7 @@ import {useSignIn} from "../hooks/useSignIn.js";
 import useMessage from "../hooks/useMessage.jsx";
 import {useCurrentUser} from "../hooks/useCurrentUser.js";
 import {useGetCurrentUser} from "../hooks/useGetCurrentUser.js";
-import Models from "../lib/Models.js";
+import CoreApi from "../lib/CoreApi.js";
 import FormSection from "./FormSection";
 
 export default function SignInPage() {
@@ -30,7 +30,7 @@ export default function SignInPage() {
     },
     onSuccess: () => {
       showSuccessMessage("You have successfully signed in!");
-      Models.build().getCurrentUser().then((res) => {
+      CoreApi.build().getCurrentUser().then((res) => {
         setCurrentUser(res.data)
       })
       navigate("/");

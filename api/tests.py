@@ -10,7 +10,7 @@ sys.path.append('/home/bruno/Code/bsc/social_hub')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'social_hub.settings')
 django.setup()
 
-from rest_framework.test import APIRequestFactory, force_authenticate
+from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
 
 
@@ -24,7 +24,7 @@ class RestAPITestCase(APITestCase):
         self.status_post = StatusPostFactory.create(user=self.user)
 
     def test_signup(self):
-        response = self.client.post('/api/signup/',
+        response = self.client.post('/api/users/',
                                     format='json',
                                     data={'email': 'test@email.com', 'first_name': 'Testfirst',
                                           'last_name': 'Testlast', 'password': 'testpassword',
@@ -65,7 +65,6 @@ class RestAPITestCase(APITestCase):
         self.assertEqual(self.user.email, result["data"]["user"]['email'])
         self.assertEqual(self.profile.biography, result["data"]['biography'])
         self.assertEqual(self.profile.location, result["data"]['location'])
-        self.assertEqual(self.profile.profile_pic.url, result["data"]['profile_pic'])
 
     def test_get_current_user(self):
         self.client.force_login(self.user)
@@ -94,7 +93,6 @@ class RestAPITestCase(APITestCase):
         self.assertEqual(self.user.email, result["data"][0]['user']['email'])
         self.assertEqual(self.profile.biography, result["data"][0]['biography'])
         self.assertEqual(self.profile.location, result["data"][0]['location'])
-        self.assertEqual(self.profile.profile_pic.url, result["data"][0]['profile_pic'])
 
     def test_get_status_posts(self):
         self.client.force_login(self.user)
@@ -117,6 +115,17 @@ class RestAPITestCase(APITestCase):
         self.assertEqual(self.status_post.image.url, result["data"]['image'])
         self.assertEqual(self.status_post.user.first_name, result["data"]['user']['first_name'])
         self.assertEqual(self.status_post.user.last_name, result["data"]['user']['last_name'])
+
+    def test_put_status_post(self):
+        self.client.force_login(self.user)
+        response = self.client.put('/api/status_posts/' + str(self.status_post.id) + '/',
+                                   format='json',
+                                   data={'description': 'Test description 2', 'title': 'Test title 2', 'image': 'test.png'})
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        status_post = StatusPost.objects.get(id=self.status_post.id)
+        self.assertEqual('Test description 2', status_post.description)
+        self.assertEqual('Test title 2', status_post.title)
+
 
     def test_create_friendship(self):
         self.client.force_login(self.user)
@@ -141,9 +150,9 @@ class RestAPITestCase(APITestCase):
         response = self.client.get('/api/profiles/search/?q=' + self.user.first_name[0:3])
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         result = response.json()
-        self.assertEqual(self.another_profile.id, result["data"][0]['id'])
-        self.assertEqual(self.another_profile.user.first_name, result["data"][0]['user']['first_name'])
-        self.assertEqual(self.another_profile.user.last_name, result["data"][0]['user']['last_name'])
+        self.assertEqual(self.profile.id, result["data"][0]['id'])
+        self.assertEqual(self.profile.user.first_name, result["data"][0]['user']['first_name'])
+        self.assertEqual(self.profile.user.last_name, result["data"][0]['user']['last_name'])
 
     def test_get_profile_status_posts(self):
         response = self.client.get('/api/profiles/' + str(self.profile.id) + '/status_posts/')
