@@ -4,6 +4,7 @@ from rest_framework import status
 from api.ApiError import ApiError
 from api.UserService import UserService
 
+
 # Module to handle authentication
 class AuthService:
     # returns the user logged in if any

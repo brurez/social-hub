@@ -21,6 +21,7 @@ export function useCurrentUser() {
 
   const currentUser = state.currentUser ? state.currentUser : undefined
 
+  // returns a boolean indicating if the user is logged in or not
   function isCurrentUser(userId) {
     return currentUser && currentUser.id === userId;
   }

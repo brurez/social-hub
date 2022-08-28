@@ -1,15 +1,7 @@
-import os
-import sys
-import django
 from rest_framework import status
 
 from .ProfileService import ProfileService
 from .model_factories import *
-
-sys.path.append('/home/bruno/Code/bsc/social_hub')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'social_hub.settings')
-django.setup()
-
 from rest_framework.test import APIRequestFactory
 from rest_framework.test import APITestCase
 
