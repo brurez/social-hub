@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardMedia from "@mui/material/CardMedia";
-import { SERVER_URL } from "../../env.js";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { AppLink } from "./AppLink";
@@ -36,7 +35,7 @@ export function PostItem(props) {
         component={"img"}
         image={
           props.post.image
-            ? SERVER_URL + props.post.image
+            ? props.post.image
             : "https://picsum.photos/200?blur=10?random=" + props.post.id
         }
         title={props.post.title}

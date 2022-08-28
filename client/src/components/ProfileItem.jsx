@@ -1,5 +1,4 @@
 import { Link as RouterLink } from "react-router-dom";
-import { SERVER_URL } from "../../env.js";
 import Link from "@mui/material/Link";
 import * as React from "react";
 import { StartChatButton } from "./StartChatButton.jsx";
@@ -13,7 +12,7 @@ export function ProfileItem(props) {
           <RouterLink to={"/profiles/" + props.profile.id}>
             <img
               height={40}
-              src={SERVER_URL + props.profile.profilePic}
+              src={props.profile.profilePic}
               alt={
                 props.profile.user.firstName + " " + props.profile.user.lastName
               }

@@ -5,7 +5,7 @@ import { resolve } from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // base: '/static/dist',
+  base: '/static/dist', // comment this line to run in dev mode
   build: {
     outDir: resolve('../static/dist'),
     assetsDir: '',

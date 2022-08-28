@@ -9,7 +9,7 @@ import { useUpdateUserProfile } from "../hooks/useUpdateUserProfile.js";
 import useMessage from "../hooks/useMessage.jsx";
 import CoreApi from "../lib/CoreApi.js";
 import { useGetUserProfile } from "../hooks/useGetUserProfile.js";
-import { DEFAULT_PROFILE_PIC, SERVER_URL } from "../../env.js";
+import { DEFAULT_PROFILE_PIC } from "../../env.js";
 import { useNavigate } from "react-router-dom";
 import FormSection from "./FormSection";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -87,7 +87,7 @@ export default function EditProfileHomePage() {
               <Grid item xs={12} ml={1}>
                 <img
                   height={200}
-                  src={SERVER_URL + profile.profilePic || DEFAULT_PROFILE_PIC}
+                  src={profile.profilePic || DEFAULT_PROFILE_PIC}
                   alt={"profile pic"}
                 />
               </Grid>

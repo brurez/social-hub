@@ -3,7 +3,6 @@ import { useGetProfile } from "../hooks/useGetProfile.js";
 import { useNavigate, useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import { SERVER_URL } from "../../env.js";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import * as React from "react";
@@ -94,7 +93,7 @@ export default function ProfileHomePage() {
             style={{ maxWidth: 300 }}
             src={
               profile.profilePic
-                ? SERVER_URL + profile.profilePic
+                ? profile.profilePic
                 : "https://picsum.photos/200?blur=10?random=" + profile.id
             }
           />

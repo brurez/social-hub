@@ -2,7 +2,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { DEFAULT_PROFILE_PIC, SERVER_URL } from "../../env.js";
+import { DEFAULT_PROFILE_PIC } from "../../env.js";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import { useGetStatusPost } from "../hooks/useGetStatusPost.js";
@@ -69,7 +69,7 @@ export function DisplayPost({ post }) {
             style={{ width: "100%", height: "auto" }}
             src={
               post.image
-                ? SERVER_URL + post.image
+                ? post.image
                 : "https://picsum.photos/200?blur=10?random=" + post.id
             }
           />
@@ -167,7 +167,7 @@ export function EditPost({ post = {}, title }) {
             {post.image ? (
               <img
                 height={200}
-                src={SERVER_URL + post.image || DEFAULT_PROFILE_PIC}
+                src={post.image || DEFAULT_PROFILE_PIC}
                 alt={"post image"}
               />
             ) : (
