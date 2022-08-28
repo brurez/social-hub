@@ -1,8 +1,8 @@
 import {useQuery} from 'react-query';
 import CoreApi from "../lib/CoreApi.js";
 
-const models = CoreApi.build()
+const coreApi = CoreApi.build()
 
 export function useGetStatusPosts() {
-  return useQuery(["getStatusPosts"], models.getStatusPosts.bind(models));
+  return useQuery(["getStatusPosts"], coreApi.getStatusPosts.bind(coreApi));
 }

@@ -104,6 +104,8 @@ def users(request, user_id=None):
 
         # Delete user
         if request.method == 'DELETE':
+            if request.user.id != user_id:
+                raise ApiError('You can only delete your own account', status.HTTP_401_UNAUTHORIZED)
             UserService.delete_user(user_id)
 
 

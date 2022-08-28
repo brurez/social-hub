@@ -7,7 +7,7 @@ export default class ChatSocket {
   }
 
   connect(user1Id, user2Id) {
-    this.socket = new WebSocket(`ws://${window.location.hostname}/ws/chat/${user1Id}/${user2Id}/`);
+    this.socket = new WebSocket(`ws://${window.location.hostname}:8000/ws/chat/${user1Id}/${user2Id}/`);
     this.socket.onopen = this.#onSocketOpen.bind(this);
     this.socket.onmessage = this.#onSocketMessage.bind(this);
     this.socket.onerror = this.#onSocketError.bind(this);
