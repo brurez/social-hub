@@ -16,15 +16,16 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from social_hub import views
 
 urlpatterns = [
-    path('', views.index, name="index"),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('messaging/', include('messaging.urls')),
+    # allows every route to be handled by the frontend using react-router
+    re_path(r".*", views.index)
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
