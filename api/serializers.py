@@ -3,6 +3,20 @@ from rest_framework import serializers
 from api.models import User, Profile, StatusPost
 
 
+class UserInputSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    password = serializers.CharField()
+    password2 = serializers.CharField()
+
+    # validates if password and password2 are the same
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError({"password": "Passwords don't match"})
+        return data
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

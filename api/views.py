@@ -11,7 +11,7 @@ from rest_framework import status
 
 # Create your views here.
 from api.models import User, Profile
-from api.serializers import UserSerializer, ProfileSerializer, StatusPostSerializer
+from api.serializers import UserSerializer, ProfileSerializer, StatusPostSerializer, UserInputSerializer
 
 
 def index(request):
@@ -70,12 +70,15 @@ def users(request, user_id=None):
 
         # New user sign up
         if request.method == 'POST':
-            email = request.data['email']
-            first_name = request.data['first_name']
-            last_name = request.data['last_name']
-            password = request.data['password']
-            password2 = request.data['password2']
+            input_serializer = UserInputSerializer(data=request.data)
+            if input_serializer.is_valid() is False:
+                raise ApiError(input_serializer.errors, status.HTTP_400_BAD_REQUEST)
 
+            email = input_serializer.data['email']
+            first_name = input_serializer.data['first_name']
+            last_name = input_serializer.data['last_name']
+            password = input_serializer.data['password']
+            password2 = input_serializer.data['password2']
             # Creates a new user
             user, profile = AuthService.sign_up(email, first_name, last_name, password, password2)
             # Log in the user to get session cookie
