@@ -3,6 +3,7 @@
 ## How to run the application
 - Create a venv environment. Windows example: “python3 -m venv venv”
 - Activate the venv environment.
+- If running on Mac or Linux, remove "twisted-iocpsupport==1.0.2" from "requirements.txt"
 - Install required libraries: “pip install -r requirements.txt”
 - Start a Redis instance using Redis default port: “docker run -p 6379:6379 -d redis:5”
 - Start the Django application by typing: “python manage.py runserver”
