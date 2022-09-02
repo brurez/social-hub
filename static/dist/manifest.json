@@ -1,0 +1,14 @@
+{
+  "index.html": {
+    "file": "index.b167e9bf.js",
+    "src": "index.html",
+    "isEntry": true,
+    "css": [
+      "index.3dd79a12.css"
+    ]
+  },
+  "index.css": {
+    "file": "index.3dd79a12.css",
+    "src": "index.css"
+  }
+}
