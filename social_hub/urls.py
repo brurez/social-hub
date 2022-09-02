@@ -24,9 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('messaging/', include('messaging.urls')),
-    # allows every route to be handled by the frontend using react-router
-    re_path(r".*", views.index)
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# allows every route to be handled by the frontend using react-router
+urlpatterns += [re_path(r'.*', views.index)]
